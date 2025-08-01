@@ -1,0 +1,52 @@
+{
+    "name": "erwane/whep-client",
+    "description": "Webhooks handler for emailing providers.",
+    "type": "library",
+    "keywords": [
+        "webhook",
+        "client"
+    ],
+    "homepage": "https://github.com/Erwane/whep-client",
+    "support": {
+        "issues": "https://github.com/Erwane/whep-client/issues",
+        "source": "https://github.com/Erwane/whep-client"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Erwane",
+            "email": "erwane@phea.fr",
+            "homepage": "https://erwane-breton.fr"
+        }
+    ],
+    "require": {
+        "php": "^7.2"
+    },
+    "require-dev": {
+        "cakephp/cakephp-codesniffer": "^4.0",
+        "phpunit/phpunit": "^8.5",
+        "symfony/var-dumper": "^v5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Whep\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Whep\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "platform-check": true,
+        "sort-packages": true,
+        "prefered-install": "dist",
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "cscheck": "php vendor/bin/phpcs -p -s src tests",
+        "csfix": "php vendor/bin/phpcbf src tests"
+    }
+}
