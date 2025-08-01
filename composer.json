@@ -29,12 +29,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Whep\\": "src/"
+            "WHEP\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Whep\\Test\\": "tests/"
+            "WHEP\\Test\\": "tests/"
         }
     },
     "config": {
