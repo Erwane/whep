@@ -25,6 +25,7 @@
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^4.0",
         "phpunit/phpunit": "^8.5",
+        "symfony/phpunit-bridge": "^7.0",
         "symfony/var-dumper": "^v5.0"
     },
     "autoload": {
@@ -34,7 +35,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "WHEP\\Test\\": "tests/"
+            "WHEP\\Test\\": "tests/",
+            "WHEP\\Provider\\": "tests/test_provider/"
         }
     },
     "config": {

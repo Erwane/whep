@@ -14,4 +14,8 @@
             <directory suffix=".php" phpVersion="7.2">src/</directory>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="\Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+    </listeners>
 </phpunit>

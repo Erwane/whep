@@ -85,7 +85,7 @@ class MxDetector
      * @param string $needle Needle
      * @return bool
      */
-    protected function _startsWith(string $haystack, string $needle): bool
+    protected static function _startsWith(string $haystack, string $needle): bool
     {
         return strncmp($haystack, $needle, strlen($needle)) === 0;
     }
@@ -98,7 +98,7 @@ class MxDetector
      * @return bool
      * @see https://github.com/symfony/polyfill-php80/blob/1.x/Php80.php
      */
-    protected function _endsWith(string $haystack, string $needle): bool
+    protected static function _endsWith(string $haystack, string $needle): bool
     {
         if ($haystack === '') {
             return false;
@@ -120,7 +120,7 @@ class MxDetector
      * @param string $needle Needle
      * @return bool
      */
-    protected function _contains(string $haystack, string $needle): bool
+    protected static function _contains(string $haystack, string $needle): bool
     {
         return $needle === '' || strpos($haystack, $needle) !== false;
     }
@@ -132,7 +132,7 @@ class MxDetector
      * @param string $pattern Regex pattern
      * @return bool
      */
-    protected function _regex(string $haystack, string $pattern): bool
+    protected static function _regex(string $haystack, string $pattern): bool
     {
         return preg_match($pattern, $haystack);
     }
