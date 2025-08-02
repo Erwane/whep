@@ -12,7 +12,6 @@ namespace WHEP\Test\TestCase;
 
 use PHPUnit\Framework\TestCase;
 use WHEP\MxDetector;
-use WHEP\ProviderInterface;
 
 /**
  * @uses   \WHEP\MxDetector
@@ -24,49 +23,37 @@ class MxDetectorTest extends TestCase
     {
         $responses = require_once TESTS . 'resources' . DIRECTORY_SEPARATOR . 'mx_responses.php';
 
-        return [
+        $data = [
             // Null
             [
+                'unknown',
                 'This is an unknown SMTP response',
                 null,
             ],
-            // Quota
-            [
-                $responses['gmail']['quota'],
-                ProviderInterface::EVENT_BOUNCE_QUOTA,
-            ],
-            [
-                $responses['laposte']['quota'],
-                ProviderInterface::EVENT_BOUNCE_QUOTA,
-            ],
-            [
-                $responses['orange']['quota'],
-                ProviderInterface::EVENT_BOUNCE_QUOTA,
-            ],
-
-            // Inactive, disabled, unknown
-            [
-                $responses['gmail']['quota_inactive'],
-                ProviderInterface::EVENT_BOUNCE_HARD,
-            ],
-            [
-                $responses['orange']['invalid'],
-                ProviderInterface::EVENT_BOUNCE_HARD,
-            ],
-
-            // Error
-            [
-                $responses['t-online']['reputation'],
-                ProviderInterface::EVENT_ERROR,
-            ],
         ];
+
+        foreach ($responses as $type => $items) {
+            foreach ($items as $name => $response) {
+                $data[] = [
+                    $name,
+                    $response,
+                    $type,
+                ];
+            }
+        }
+
+        return $data;
     }
 
     /**
      * @dataProvider dataGetType
      */
-    public function testGetType($smtp, $expected): void
+    public function testGetType($name, $smtp, $expected): void
     {
-        $this->assertEquals($expected, MxDetector::getType($smtp));
+        $this->assertEquals(
+            $expected,
+            MxDetector::getType($smtp),
+            sprintf('Type detection failed. type=%s; name=%s', $expected, $name)
+        );
     }
 }

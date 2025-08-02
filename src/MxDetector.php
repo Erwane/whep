@@ -25,35 +25,46 @@ class MxDetector
      * @var array[]
      */
     protected static $_searches = [
-        // Gmail
+        // Quota
         [
-            'needle' => "552-5.2.2 The recipient's inbox is out of storage space and inactive",
-            'method' => '_startsWith',
-            'type' => ProviderInterface::EVENT_BOUNCE_HARD,
-        ],
-        [
-            'needle' => "452-4.2.2 The recipient's inbox is out of storage space",
-            'method' => '_startsWith',
-            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
-        ],
-        // Orange
-        [
-            'needle' => 'Invalid recipient. OFR_416',
-            'method' => '_contains',
-            'type' => ProviderInterface::EVENT_BOUNCE_HARD,
-        ],
-        [
-            'needle' => 'Recipient overquota. OFR_417',
+            'needle' => ' out of storage space.',
             'method' => '_contains',
             'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
-        // LaPoste
+        [
+            'needle' => 'Recipient overquota',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
+        ],
+        [
+            'needle' => 'is over quota',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
+        ],
         [
             'needle' => ': Over quota',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
+        ],
+        [
+            'needle' => 'exceeded storage allocation',
             'method' => '_endsWith',
             'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
-        // T-Online.de
+
+        // Hard
+        [
+            'needle' => ' out of storage space and inactive.',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BOUNCE_HARD,
+        ],
+        [
+            'needle' => 'Invalid recipient.',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BOUNCE_HARD,
+        ],
+
+        // Error
         [
             'needle' => 'None/bad reputation',
             'method' => '_contains',
@@ -93,6 +104,9 @@ class MxDetector
      */
     protected static function _startsWith(string $haystack, string $needle): bool
     {
+        $haystack = mb_strtolower($haystack);
+        $needle = mb_strtolower($needle);
+
         return strncmp($haystack, $needle, strlen($needle)) === 0;
     }
 
@@ -109,6 +123,9 @@ class MxDetector
         if ($haystack === '') {
             return false;
         }
+
+        $haystack = mb_strtolower($haystack);
+        $needle = mb_strtolower($needle);
 
         if ($needle === '' || $needle === $haystack) {
             return true;
@@ -128,6 +145,9 @@ class MxDetector
      */
     protected static function _contains(string $haystack, string $needle): bool
     {
+        $haystack = mb_strtolower($haystack);
+        $needle = mb_strtolower($needle);
+
         return $needle === '' || strpos($haystack, $needle) !== false;
     }
 
