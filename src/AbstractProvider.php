@@ -21,37 +21,19 @@ use const DATE_ATOM;
  */
 abstract class AbstractProvider implements ProviderInterface
 {
-    protected $_statusMap = [
-        ProviderInterface::TYPE_SENT => ProviderInterface::STATUS_SUCCESS,
-        ProviderInterface::TYPE_OPENED => ProviderInterface::STATUS_SUCCESS,
-        ProviderInterface::TYPE_CLICK => ProviderInterface::STATUS_SUCCESS,
-
-        ProviderInterface::TYPE_DELAYED => ProviderInterface::STATUS_WARN,
-        ProviderInterface::TYPE_ABUSE => ProviderInterface::STATUS_WARN,
-        ProviderInterface::TYPE_UNSUB => ProviderInterface::STATUS_WARN,
-        ProviderInterface::TYPE_SOFT_FAIL => ProviderInterface::STATUS_WARN,
-
-        ProviderInterface::TYPE_BOUNCED => ProviderInterface::STATUS_FAIL,
-        ProviderInterface::TYPE_QUOTA => ProviderInterface::STATUS_FAIL,
-        ProviderInterface::TYPE_BLOCKED => ProviderInterface::STATUS_FAIL,
-        ProviderInterface::TYPE_HARD_FAIL => ProviderInterface::STATUS_FAIL,
-
-        ProviderInterface::TYPE_ERROR => ProviderInterface::STATUS_FAIL,
-    ];
-
     protected $_defaultConfig = [
         'callbacks' => [
-            ProviderInterface::TYPE_DELAYED => null,
-            ProviderInterface::TYPE_BOUNCED => null,
-            ProviderInterface::TYPE_BLOCKED => null,
-            ProviderInterface::TYPE_SOFT_FAIL => null,
-            ProviderInterface::TYPE_HARD_FAIL => null,
-            ProviderInterface::TYPE_SENT => null,
-            ProviderInterface::TYPE_ABUSE => null,
-            ProviderInterface::TYPE_QUOTA => null,
-            ProviderInterface::TYPE_UNSUB => null,
-            ProviderInterface::TYPE_OPENED => null,
-            ProviderInterface::TYPE_CLICK => null,
+            ProviderInterface::EVENT_DEFERRED => null,
+            ProviderInterface::EVENT_BOUNCE_SOFT => null,
+            ProviderInterface::EVENT_BOUNCE_HARD => null,
+            ProviderInterface::EVENT_BOUNCE_QUOTA => null,
+            ProviderInterface::EVENT_BLOCKED => null,
+            ProviderInterface::EVENT_SENT => null,
+            ProviderInterface::EVENT_OPENED => null,
+            ProviderInterface::EVENT_CLICK => null,
+            ProviderInterface::EVENT_ABUSE => null,
+            ProviderInterface::EVENT_UNSUB => null,
+            ProviderInterface::EVENT_ERROR => null,
         ],
     ];
 
@@ -77,11 +59,11 @@ abstract class AbstractProvider implements ProviderInterface
     protected $_type = null;
 
     /**
-     * Event email.
+     * Recipient e-mail.
      *
      * @var string|null
      */
-    protected $_email = null;
+    protected $_recipient = null;
 
     /**
      * Provider details about event.
@@ -91,7 +73,7 @@ abstract class AbstractProvider implements ProviderInterface
     protected $_details = null;
 
     /**
-     * SMTP return.
+     * SMTP response.
      *
      * @var string|null
      */
@@ -141,14 +123,6 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * @inheritDoc
      */
-    public function getStatus(): ?int
-    {
-        return $this->_statusMap[$this->_type] ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getTime(): ?DateTimeInterface
     {
         return $this->_time;
@@ -167,10 +141,10 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * @inheritDoc
      */
-    public function getEmail(): ?string
+    public function getRecipient(): ?string
     {
-        if ($this->_email) {
-            return trim(strtolower($this->_email));
+        if ($this->_recipient) {
+            return trim(strtolower($this->_recipient));
         }
 
         return null;
@@ -279,10 +253,9 @@ abstract class AbstractProvider implements ProviderInterface
     public function __debugInfo()
     {
         $debug = [
-            'status' => $this->getStatus(),
             'type' => $this->getType(),
             'time' => null,
-            'email' => $this->getEmail(),
+            'email' => $this->getRecipient(),
             'details' => $this->getDetails(),
             'smtp' => $this->getSmtpResponse(),
             'url' => $this->getUrl(),

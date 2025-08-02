@@ -22,7 +22,7 @@ class Generic extends AbstractProvider
         parent::_load($data);
 
         $this->_smtp = $data['smtp'] ?? null;
-        $this->_email = $data['email'] ?? null;
+        $this->_recipient = $data['email'] ?? null;
     }
 
     public function customCallback()

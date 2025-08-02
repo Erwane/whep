@@ -29,35 +29,35 @@ class MxDetector
         [
             'needle' => "552-5.2.2 The recipient's inbox is out of storage space and inactive",
             'method' => '_startsWith',
-            'type' => ProviderInterface::TYPE_HARD_FAIL,
+            'type' => ProviderInterface::EVENT_BOUNCE_HARD,
         ],
         [
             'needle' => "452-4.2.2 The recipient's inbox is out of storage space",
             'method' => '_startsWith',
-            'type' => ProviderInterface::TYPE_QUOTA,
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
         // Orange
         [
             'needle' => 'Invalid recipient. OFR_416',
             'method' => '_contains',
-            'type' => ProviderInterface::TYPE_HARD_FAIL,
+            'type' => ProviderInterface::EVENT_BOUNCE_HARD,
         ],
         [
             'needle' => 'Recipient overquota. OFR_417',
             'method' => '_contains',
-            'type' => ProviderInterface::TYPE_QUOTA,
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
         // LaPoste
         [
             'needle' => ': Over quota',
             'method' => '_endsWith',
-            'type' => ProviderInterface::TYPE_QUOTA,
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
         // T-Online.de
         [
             'needle' => 'None/bad reputation',
             'method' => '_contains',
-            'type' => ProviderInterface::TYPE_ERROR,
+            'type' => ProviderInterface::EVENT_ERROR,
         ],
     ];
 

@@ -34,9 +34,8 @@ class AbstractProviderTest extends TestCase
     {
         $p = Client::getProvider('Generic');
 
-        $this->assertNull($p->getStatus());
         $this->assertNull($p->getTime());
-        $this->assertNull($p->getEmail());
+        $this->assertNull($p->getRecipient());
         $this->assertNull($p->getDetails());
         $this->assertNull($p->getSmtpResponse());
         $this->assertNull($p->getUrl());
@@ -55,8 +54,8 @@ class AbstractProviderTest extends TestCase
         $p->process(['smtp' => '552: Over quota', 'email' => ' Recipient.Name@Example.COM ']);
 
         $this->assertEquals($expected, $p->getTime());
-        $this->assertEquals(ProviderInterface::TYPE_QUOTA, $p->getType());
-        $this->assertSame('recipient.name@example.com', $p->getEmail());
+        $this->assertEquals(ProviderInterface::EVENT_BOUNCE_QUOTA, $p->getType());
+        $this->assertSame('recipient.name@example.com', $p->getRecipient());
     }
 
     public function testCallbacks(): void
@@ -64,7 +63,7 @@ class AbstractProviderTest extends TestCase
         $mock = $this->createPartialMock(Generic::class, ['customCallback']);
         $config = [
             'callbacks' => [
-                ProviderInterface::TYPE_QUOTA => [$mock, 'customCallback'],
+                ProviderInterface::EVENT_BOUNCE_QUOTA => [$mock, 'customCallback'],
             ],
         ];
         $p = Client::getProvider('Generic', $config);
@@ -82,7 +81,7 @@ class AbstractProviderTest extends TestCase
         $mock = $this->createPartialMock(Generic::class, ['customCallback']);
         $config = [
             'callbacks' => [
-                ProviderInterface::TYPE_HARD_FAIL => [$mock, 'customCallback'],
+                ProviderInterface::EVENT_BOUNCE_HARD => [$mock, 'customCallback'],
             ],
         ];
         $p = Client::getProvider('Generic', $config);
@@ -106,7 +105,6 @@ class AbstractProviderTest extends TestCase
         $result = $p->__debugInfo();
 
         $expected = [
-            'status' => 500,
             'type' => 'quota',
             'time' => $time->format(DATE_ATOM),
             'email' => null,

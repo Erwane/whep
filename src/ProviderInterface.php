@@ -17,22 +17,17 @@ use DateTimeInterface;
  */
 interface ProviderInterface
 {
-    public const STATUS_SUCCESS = 200;
-    public const STATUS_WARN = 400;
-    public const STATUS_FAIL = 500;
-
-    public const TYPE_DELAYED = 'delayed';
-    public const TYPE_BOUNCED = 'bounced';
-    public const TYPE_QUOTA = 'quota';
-    public const TYPE_BLOCKED = 'blocked';
-    public const TYPE_SOFT_FAIL = 'softfail';
-    public const TYPE_HARD_FAIL = 'hardfail';
-    public const TYPE_SENT = 'sent';
-    public const TYPE_ABUSE = 'abuse';
-    public const TYPE_UNSUB = 'unsubscribed';
-    public const TYPE_OPENED = 'opened';
-    public const TYPE_CLICK = 'click';
-    public const TYPE_ERROR = 'error';
+    public const EVENT_DEFERRED = 'deferred';
+    public const EVENT_BOUNCE_SOFT = 'soft_bounce';
+    public const EVENT_BOUNCE_HARD = 'hard_bounce';
+    public const EVENT_BOUNCE_QUOTA = 'quota';
+    public const EVENT_BLOCKED = 'blocked';
+    public const EVENT_SENT = 'sent';
+    public const EVENT_OPENED = 'opened';
+    public const EVENT_CLICK = 'click';
+    public const EVENT_ABUSE = 'abuse';
+    public const EVENT_UNSUB = 'unsubscribed';
+    public const EVENT_ERROR = 'error';
 
     /**
      * Get provider name.
@@ -49,13 +44,6 @@ interface ProviderInterface
     public function getTime(): ?DateTimeInterface;
 
     /**
-     * Event status. Could be 200|400|500.
-     *
-     * @return int|null
-     */
-    public function getStatus(): ?int;
-
-    /**
      * Get event type.
      *
      * @return string|null
@@ -63,11 +51,11 @@ interface ProviderInterface
     public function getType(): ?string;
 
     /**
-     * Get related email.
+     * Get recipient e-mail.
      *
      * @return string|null
      */
-    public function getEmail(): ?string;
+    public function getRecipient(): ?string;
 
     /**
      * Get event provider detail.

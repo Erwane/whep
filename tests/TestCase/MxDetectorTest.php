@@ -33,31 +33,31 @@ class MxDetectorTest extends TestCase
             // Quota
             [
                 $responses['gmail']['quota'],
-                ProviderInterface::TYPE_QUOTA,
+                ProviderInterface::EVENT_BOUNCE_QUOTA,
             ],
             [
                 $responses['laposte']['quota'],
-                ProviderInterface::TYPE_QUOTA,
+                ProviderInterface::EVENT_BOUNCE_QUOTA,
             ],
             [
                 $responses['orange']['quota'],
-                ProviderInterface::TYPE_QUOTA,
+                ProviderInterface::EVENT_BOUNCE_QUOTA,
             ],
 
             // Inactive, disabled, unknown
             [
                 $responses['gmail']['quota_inactive'],
-                ProviderInterface::TYPE_HARD_FAIL,
+                ProviderInterface::EVENT_BOUNCE_HARD,
             ],
             [
                 $responses['orange']['invalid'],
-                ProviderInterface::TYPE_HARD_FAIL,
+                ProviderInterface::EVENT_BOUNCE_HARD,
             ],
 
             // Error
             [
                 $responses['t-online']['reputation'],
-                ProviderInterface::TYPE_ERROR,
+                ProviderInterface::EVENT_ERROR,
             ],
         ];
     }
