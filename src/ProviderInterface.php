@@ -107,9 +107,9 @@ interface ProviderInterface
     public function process(array $data);
 
     /**
-     * Call the correct callbacks if configured.
+     * Call the correct callback if configured.
      *
      * @return $this
      */
-    public function callbacks();
+    public function callback();
 }

@@ -256,7 +256,7 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @return void
      */
-    public function callbacks(): void
+    public function callback(): void
     {
         if ($this->_type) {
             foreach ($this->_config['callbacks'] as $type => $callable) {

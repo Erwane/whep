@@ -72,7 +72,7 @@ class AbstractProviderTest extends TestCase
             ->with($p);
 
         $p->process(['smtp' => '552: Over quota'])
-            ->callbacks();
+            ->callback();
     }
 
     public function testCallbackNotCalled(): void
@@ -89,7 +89,7 @@ class AbstractProviderTest extends TestCase
             ->method('customCallback');
 
         $p->process(['smtp' => '552: Over quota'])
-            ->callbacks();
+            ->callback();
     }
 
     public function testDebugInfo(): void
