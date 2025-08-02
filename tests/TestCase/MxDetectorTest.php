@@ -53,6 +53,12 @@ class MxDetectorTest extends TestCase
                 $responses['orange']['invalid'],
                 ProviderInterface::TYPE_HARD_FAIL,
             ],
+
+            // Error
+            [
+                $responses['t-online']['reputation'],
+                ProviderInterface::TYPE_ERROR,
+            ],
         ];
     }
 

@@ -19,4 +19,7 @@ return [
         'invalid' => '550 5.1.1 hhtzumeItI371 Adresse d au moins un destinataire invalide. Invalid recipient. OFR_416 [416]',
         'quota' => '552 5.1.1 hibJumn68I371 Boite du destinataire pleine. Recipient overquota. OFR_417 [417]',
     ],
+    't-online' => [
+        'reputation' => '554 IP=1.2.3.4 - None/bad reputation. Ask your postmaster for help or to contact tobr@rx.t-online.de for reset. (NOWL)',
+    ],
 ];

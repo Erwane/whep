@@ -53,6 +53,12 @@ class MxDetector
             'method' => '_endsWith',
             'type' => ProviderInterface::TYPE_QUOTA,
         ],
+        // T-Online.de
+        [
+            'needle' => 'None/bad reputation',
+            'method' => '_contains',
+            'type' => ProviderInterface::TYPE_ERROR,
+        ],
     ];
 
     /**
