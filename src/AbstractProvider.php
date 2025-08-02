@@ -169,7 +169,11 @@ abstract class AbstractProvider implements ProviderInterface
      */
     public function getEmail(): ?string
     {
-        return $this->_email;
+        if ($this->_email) {
+            return trim(strtolower($this->_email));
+        }
+
+        return null;
     }
 
     /**

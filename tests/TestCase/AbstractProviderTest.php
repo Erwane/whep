@@ -50,11 +50,13 @@ class AbstractProviderTest extends TestCase
 
         $expected = \DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new \DateTimeZone('UTC'));
 
+        /** @var \WHEP\Provider\Generic $p */
         $p = Client::getProvider('Generic');
-        $p->process(['smtp' => '552: Over quota']);
+        $p->process(['smtp' => '552: Over quota', 'email' => ' Recipient.Name@Example.COM ']);
 
         $this->assertEquals($expected, $p->getTime());
         $this->assertEquals(ProviderInterface::TYPE_QUOTA, $p->getType());
+        $this->assertSame('recipient.name@example.com', $p->getEmail());
     }
 
     public function testCallbacks(): void
