@@ -10,15 +10,13 @@ declare(strict_types=1);
 
 namespace WHEP\Test\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WHEP\Client;
 use WHEP\Provider\Generic;
 use WHEP\WebhookProviderException;
 
-/**
- * @uses   \WHEP\Client
- * @covers \WHEP\Client
- */
+#[CoversClass(Client::class)]
 class ClientTest extends TestCase
 {
     public function testGetUnknownProvider(): void

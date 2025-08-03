@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use WHEP\AbstractProvider;
@@ -17,11 +19,8 @@ use WHEP\Client;
 use WHEP\Provider\Generic;
 use WHEP\ProviderInterface;
 
-/**
- * @uses   \WHEP\AbstractProvider
- * @covers \WHEP\AbstractProvider
- * @group time-sensitive
- */
+#[CoversClass(AbstractProvider::class)]
+#[Group('time-sensitive')]
 class AbstractProviderTest extends TestCase
 {
     public function testGetName(): void

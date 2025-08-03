@@ -1,8 +1,8 @@
 # Webhooks Handler for Emailing providers
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![codecov](https://codecov.io/gh/Erwane/whep-client/branch/1.x/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep-client)
-[![Build Status](https://github.com/Erwane/whep-client/actions/workflows/ci.yml/badge.svg?branch=1.x)](https://github.com/Erwane/whep-client/actions)
+[![codecov](https://codecov.io/gh/Erwane/whep-client/branch/2.x/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep-client)
+[![Build Status](https://github.com/Erwane/whep-client/actions/workflows/ci.yml/badge.svg?branch=2.x)](https://github.com/Erwane/whep-client/actions)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/whep-client)](https://packagist.org/packages/Erwane/whep-client)
 [![Packagist Version](https://img.shields.io/packagist/v/Erwane/whep-client)](https://packagist.org/packages/Erwane/whep-client)
 
@@ -13,10 +13,11 @@ This project is not made to be used alone, you need to pick your providers handl
 
 ## Available providers handlers
 
-| Provider                                | Package            |
-|-----------------------------------------|--------------------|
-| [Postal](https://docs.postalserver.io/) | erwane/whep-postal |
-|                                         |                    |
+| Provider                                | Package             |
+|-----------------------------------------|---------------------|
+| [Brevo](https://www.brevo.com/)         | erwane/whep-brevo   |
+| [Mailjet](https://www.mailjet.com/)     | erwane/whep-mailjet |
+| [Postal](https://docs.postalserver.io/) | erwane/whep-postal  |
 
 ## Usage
 

@@ -10,13 +10,12 @@ declare(strict_types=1);
 
 namespace WHEP\Test\TestCase;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use WHEP\MxDetector;
 
-/**
- * @uses   \WHEP\MxDetector
- * @covers \WHEP\MxDetector
- */
+#[CoversClass(MxDetector::class)]
 class MxDetectorTest extends TestCase
 {
     public static function dataGetType(): array
@@ -45,9 +44,7 @@ class MxDetectorTest extends TestCase
         return $data;
     }
 
-    /**
-     * @dataProvider dataGetType
-     */
+    #[DataProvider('dataGetType')]
     public function testGetType($name, $smtp, $expected): void
     {
         $this->assertEquals(
