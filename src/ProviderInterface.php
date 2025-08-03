@@ -22,6 +22,7 @@ interface ProviderInterface
     public const EVENT_BOUNCE_HARD = 'hard_bounce';
     public const EVENT_BOUNCE_QUOTA = 'quota';
     public const EVENT_BLOCKED = 'blocked';
+    public const EVENT_REQUEST = 'request';
     public const EVENT_SENT = 'sent';
     public const EVENT_OPENED = 'opened';
     public const EVENT_CLICK = 'click';

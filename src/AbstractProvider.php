@@ -28,6 +28,7 @@ abstract class AbstractProvider implements ProviderInterface
             ProviderInterface::EVENT_BOUNCE_HARD => null,
             ProviderInterface::EVENT_BOUNCE_QUOTA => null,
             ProviderInterface::EVENT_BLOCKED => null,
+            ProviderInterface::EVENT_REQUEST => null,
             ProviderInterface::EVENT_SENT => null,
             ProviderInterface::EVENT_OPENED => null,
             ProviderInterface::EVENT_CLICK => null,
