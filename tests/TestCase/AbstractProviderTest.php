@@ -57,6 +57,13 @@ class AbstractProviderTest extends TestCase
         $this->assertSame('recipient.name@example.com', $p->getRecipient());
     }
 
+    public function testLoadNoType()
+    {
+        $p = Client::getProvider('Generic');
+        $p->process([]);
+        $this->assertEquals(ProviderInterface::EVENT_ERROR, $p->getType());
+    }
+
     public function testCallbacks(): void
     {
         $mock = $this->createPartialMock(Generic::class, ['customCallback']);

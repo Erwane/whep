@@ -46,6 +46,13 @@ abstract class AbstractProvider implements ProviderInterface
     protected $_config = [];
 
     /**
+     * Maps provider events to WHEP event.
+     * Type could be adjusted in self::_load() or
+     * @var array
+     */
+    protected array $_typesMap = [];
+
+    /**
      * Event time.
      *
      * @var \DateTimeInterface|null
@@ -213,6 +220,9 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $this->_time = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
         $this->_raw = $data;
+
+        $event = $data['event'] ?? null;
+        $this->_type = $this->_typesMap[$event] ?? ProviderInterface::EVENT_ERROR;
     }
 
     /**
