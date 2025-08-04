@@ -2,6 +2,6 @@ codecov:
   require_ci_to_pass: yes
 
 coverage:
-  range: "90...100"
+  range: "80...95"
 
 comment: false

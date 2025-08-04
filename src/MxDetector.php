@@ -104,10 +104,7 @@ class MxDetector
      */
     protected static function _startsWith(string $haystack, string $needle): bool
     {
-        $haystack = mb_strtolower($haystack);
-        $needle = mb_strtolower($needle);
-
-        return strncmp($haystack, $needle, strlen($needle)) === 0;
+        return str_starts_with(mb_strtolower($haystack), mb_strtolower($needle));
     }
 
     /**
@@ -120,20 +117,7 @@ class MxDetector
      */
     protected static function _endsWith(string $haystack, string $needle): bool
     {
-        if ($haystack === '') {
-            return false;
-        }
-
-        $haystack = mb_strtolower($haystack);
-        $needle = mb_strtolower($needle);
-
-        if ($needle === '' || $needle === $haystack) {
-            return true;
-        }
-
-        $needleLength = strlen($needle);
-
-        return $needleLength <= strlen($haystack) && substr_compare($haystack, $needle, -$needleLength) === 0;
+        return str_ends_with(mb_strtolower($haystack), mb_strtolower($needle));
     }
 
     /**
@@ -145,10 +129,7 @@ class MxDetector
      */
     protected static function _contains(string $haystack, string $needle): bool
     {
-        $haystack = mb_strtolower($haystack);
-        $needle = mb_strtolower($needle);
-
-        return $needle === '' || strpos($haystack, $needle) !== false;
+        return str_contains(mb_strtolower($haystack), mb_strtolower($needle));
     }
 
     /**
