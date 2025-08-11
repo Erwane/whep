@@ -50,7 +50,7 @@ class MxDetectorTest extends TestCase
         $this->assertEquals(
             $expected,
             MxDetector::getType($smtp),
-            sprintf('Type detection failed. type=%s; name=%s', $expected, $name)
+            sprintf('Type detection failed. type=%s; name=%s', $expected, $name),
         );
     }
 }

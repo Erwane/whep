@@ -85,7 +85,7 @@ interface ProviderInterface
      * @param bool $asJson Return as json string
      * @return array|string|null
      */
-    public function getRaw(bool $asJson = false);
+    public function getRaw(bool $asJson = false): array|string|null;
 
     /**
      * Process webhook data.

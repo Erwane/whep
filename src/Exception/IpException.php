@@ -10,6 +10,9 @@ declare(strict_types=1);
 
 namespace WHEP\Exception;
 
+/**
+ * WHEP Ip exception.
+ */
 class IpException extends WHEPException
 {
 }

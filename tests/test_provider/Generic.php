@@ -14,7 +14,7 @@ use WHEP\AbstractProvider;
 
 class Generic extends AbstractProvider
 {
-    protected $_allowedIpAndNetwork = ['192.168.0.1/24'];
+    protected array $_allowedIpAndNetwork = ['192.168.0.1/24'];
 
     /**
      * @inheritDoc

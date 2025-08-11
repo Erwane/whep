@@ -10,6 +10,11 @@ declare(strict_types=1);
 
 namespace WHEP\Exception;
 
-class WHEPException extends \Exception
+use Exception;
+
+/**
+ * Global WHEP Exception.
+ */
+class WHEPException extends Exception
 {
 }

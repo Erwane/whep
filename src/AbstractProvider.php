@@ -47,11 +47,12 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @var array
      */
-    protected $_config = [];
+    protected array $_config = [];
 
     /**
      * Maps provider events to WHEP event.
      * Type could be adjusted in self::_load() or
+     *
      * @var array
      */
     protected array $_typesMap = [];
@@ -61,59 +62,59 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @var \DateTimeInterface|null
      */
-    protected $_time = null;
+    protected ?DateTimeInterface $_time = null;
 
     /**
      * Event type.
      *
      * @var string|null
      */
-    protected $_type = null;
+    protected ?string $_type = null;
 
     /**
      * Recipient e-mail.
      *
      * @var string|null
      */
-    protected $_recipient = null;
+    protected ?string $_recipient = null;
 
     /**
      * Provider details about event.
      *
      * @var string|null
      */
-    protected $_details = null;
+    protected ?string $_details = null;
 
     /**
      * SMTP response.
      *
      * @var string|null
      */
-    protected $_smtp = null;
+    protected ?string $_smtp = null;
 
     /**
      * Clicked url when event type is TYPE_CLICK
      *
      * @var string|null
      */
-    protected $_url = null;
+    protected ?string $_url = null;
 
     /**
      * Raw event data
      *
      * @var array|null
      */
-    protected $_raw = null;
+    protected ?array $_raw = null;
 
     /**
-     * @var string[] Provider allowed ip and network
+     * @var array<string>  Provider allowed ip and network
      */
-    protected $_allowedIpAndNetwork = [];
+    protected array $_allowedIpAndNetwork = [];
 
     /**
      * @var array
      */
-    private $_ipAndNetwork = [];
+    private array $_ipAndNetwork = [];
 
     private $_clientIpChecked = false;
 
@@ -209,7 +210,7 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * @inheritDoc
      */
-    public function getRaw(bool $asJson = false)
+    public function getRaw(bool $asJson = false): array|string|null
     {
         if ($asJson) {
             $jsonOptions = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_LINE_TERMINATORS;
@@ -223,11 +224,11 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * Add network or IP to allowed list.
      *
-     * @param string[]|string $input Ip or CIDR network
+     * @param array<string>|string $input Ip or CIDR network
      * @return $this
      * @throws \WHEP\Exception\IpException
      */
-    public function addAllowedIpOrNetwork($input)
+    public function addAllowedIpOrNetwork(array|string $input)
     {
         if (is_array($input)) {
             foreach ($input as $item) {
@@ -253,7 +254,7 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * Reset and set allowed ip or network, ignoring default provider list.
      *
-     * @param string[] $input Ip or CIDR network
+     * @param array<string> $input Ip or CIDR network
      * @return $this
      * @throws \WHEP\Exception\IpException
      */
@@ -269,6 +270,7 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @param array $data Emailing provider webhook data
      * @return $this
+     * @throws \WHEP\Exception\IpException
      */
     public function process(array $data)
     {
@@ -308,6 +310,8 @@ abstract class AbstractProvider implements ProviderInterface
             if (!$success) {
                 throw new IpException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
             }
+
+            $this->_clientIpChecked = true;
         }
     }
 
@@ -362,11 +366,11 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @return array
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         $debug = [
             'name' => $this->getName(),
-            'client_ip' => $this->_config['client_ip'] !== null ? $this->_config['client_ip']->toString() : null,
+            'client_ip' => $this->_config['client_ip']?->toString(),
             'client_ip_checked' => $this->_clientIpChecked,
             'type' => $this->getType(),
             'time' => null,
