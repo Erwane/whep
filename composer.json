@@ -21,6 +21,8 @@
     ],
     "require": {
         "php": "^7.2",
+        "ext-mbstring": "*",
+        "ext-json": "*",
         "mlocati/ip-lib": "^1.0"
     },
     "require-dev": {

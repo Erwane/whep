@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace TestCase;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use WHEP\AbstractProvider;
@@ -116,7 +118,7 @@ class AbstractProviderTest extends TestCase
     {
         ClockMock::register(AbstractProvider::class);
 
-        $expected = \DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new \DateTimeZone('UTC'));
+        $expected = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
 
         /** @var \WHEP\Provider\Generic $p */
         $p = Factory::provider('Generic', ['client_ip' => '192.168.0.10']);
@@ -125,6 +127,14 @@ class AbstractProviderTest extends TestCase
         $this->assertEquals($expected, $p->getTime());
         $this->assertEquals(ProviderInterface::EVENT_BOUNCE_QUOTA, $p->getType());
         $this->assertSame('recipient.name@example.com', $p->getRecipient());
+        $this->assertTrue($p->__debugInfo()['client_ip_checked']);
+    }
+
+    public function testLoadNoType()
+    {
+        $p = Factory::provider('Generic', ['check_ip' => false]);
+        $p->process([]);
+        $this->assertEquals(ProviderInterface::EVENT_ERROR, $p->getType());
     }
 
     public function testCallbacks(): void
@@ -167,7 +177,7 @@ class AbstractProviderTest extends TestCase
     public function testDebugInfo(): void
     {
         ClockMock::register(AbstractProvider::class);
-        $time = \DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new \DateTimeZone('UTC'));
+        $time = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
 
         $p = Factory::provider('Generic', ['check_ip' => false]);
         $data = ['smtp' => '552: Over quota'];

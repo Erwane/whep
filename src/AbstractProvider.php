@@ -50,6 +50,14 @@ abstract class AbstractProvider implements ProviderInterface
     protected $_config = [];
 
     /**
+     * Maps provider events to WHEP event.
+     * Type could be adjusted in self::_load() or
+     *
+     * @var array
+     */
+    protected $_typesMap = [];
+
+    /**
      * Event time.
      *
      * @var \DateTimeInterface|null
@@ -99,7 +107,7 @@ abstract class AbstractProvider implements ProviderInterface
     protected $_raw = null;
 
     /**
-     * @var string[] Provider allowed ip and network
+     * @var array<string>  Provider allowed ip and network
      */
     protected $_allowedIpAndNetwork = [];
 
@@ -216,7 +224,7 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * Add network or IP to allowed list.
      *
-     * @param string[]|string $input Ip or CIDR network
+     * @param array<string>|string $input Ip or CIDR network
      * @return $this
      * @throws \WHEP\Exception\IpException
      */
@@ -246,7 +254,7 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * Reset and set allowed ip or network, ignoring default provider list.
      *
-     * @param string[] $input Ip or CIDR network
+     * @param array<string> $input Ip or CIDR network
      * @return $this
      * @throws \WHEP\Exception\IpException
      */
@@ -262,6 +270,7 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @param array $data Emailing provider webhook data
      * @return $this
+     * @throws \WHEP\Exception\IpException
      */
     public function process(array $data)
     {
@@ -301,6 +310,8 @@ abstract class AbstractProvider implements ProviderInterface
             if (!$success) {
                 throw new IpException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
             }
+
+            $this->_clientIpChecked = true;
         }
     }
 
@@ -314,6 +325,9 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $this->_time = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
         $this->_raw = $data;
+
+        $event = $data['event'] ?? null;
+        $this->_type = $this->_typesMap[$event] ?? ProviderInterface::EVENT_ERROR;
     }
 
     /**
@@ -352,7 +366,7 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @return array
      */
-    public function __debugInfo()
+    public function __debugInfo(): array
     {
         $debug = [
             'name' => $this->getName(),

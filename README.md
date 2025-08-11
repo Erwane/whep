@@ -13,11 +13,11 @@ This project is not made to be used alone, you need to pick your providers handl
 
 ## Available providers handlers
 
-| Provider                                | Package                 |
-|-----------------------------------------|-------------------------|
-| [Brevo](https://www.brevo.com/)         | [erwane/whep-brevo](https://github.com/Erwane/whep-brevo)   |
+| Provider                                | Package                                                       |
+|-----------------------------------------|---------------------------------------------------------------|
+| [Brevo](https://www.brevo.com/)         | [erwane/whep-brevo](https://github.com/Erwane/whep-brevo)     |
 | [Mailjet](https://www.mailjet.com/)     | [erwane/whep-mailjet](https://github.com/Erwane/whep-mailjet) |
-| [Postal](https://docs.postalserver.io/) | [erwane/whep-postal](https://github.com/Erwane/whep-postal)  |
+| [Postal](https://docs.postalserver.io/) | [erwane/whep-postal](https://github.com/Erwane/whep-postal)   |
 
 ## Usage
 

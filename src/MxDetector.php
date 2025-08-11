@@ -22,7 +22,7 @@ class MxDetector
      *   `method` => Used method to match (_startsWith, _endsWith, _contains, _regex)
      *   `type` => ProviderInterface::TYPE_???,
      *
-     * @var array[]
+     * @var array<array>
      */
     protected static $_searches = [
         // Quota
@@ -82,10 +82,10 @@ class MxDetector
     {
         foreach (self::$_searches as $search) {
             /**
-             * @uses self::_startsWith()
-             * @uses self::_endsWith()
-             * @uses self::_contains()
-             * @uses self::_regex()
+             * @uses \WHEP\MxDetector::_startsWith()
+             * @uses \WHEP\MxDetector::_endsWith()
+             * @uses \WHEP\MxDetector::_contains()
+             * @uses \WHEP\MxDetector::_regex()
              */
             if (self::{$search['method']}($smtp, $search['needle'])) {
                 return $search['type'];
