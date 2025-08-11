@@ -15,7 +15,8 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use WHEP\AbstractProvider;
-use WHEP\Client;
+use WHEP\Exception\IpException;
+use WHEP\Factory;
 use WHEP\Provider\Generic;
 use WHEP\ProviderInterface;
 
@@ -25,13 +26,81 @@ class AbstractProviderTest extends TestCase
 {
     public function testGetName(): void
     {
-        $p = Client::getProvider('Generic');
+        $p = Factory::provider('Generic');
         $this->assertEquals('generic', $p->getName());
+    }
+
+    public static function dataAddInvalidIpOrNetwork(): array
+    {
+        return [
+            ['10.1.1.'],
+            ['fg80::1'],
+            ['10.1.1.1/33'],
+            ['fg80::1/ab'],
+        ];
+    }
+
+    /** @dataProvider dataAddInvalidIpOrNetwork */
+    public function testAddInvalidIpOrNetwork($input): void
+    {
+        $this->expectException(IpException::class);
+        $this->expectExceptionMessage('Invalid ip or network.');
+
+        $p = Factory::provider('Generic');
+
+        $p->addAllowedIpOrNetwork($input);
+    }
+
+    public static function dataAddAllowedIpOrNetwork(): array
+    {
+        return [
+            ['10.1.1.1', ['192.168.0.0/24', '10.1.1.1']],
+            ['10.1.1.0/16', ['192.168.0.0/24', '10.1.0.0/16']],
+            ['10.1.1.0', ['192.168.0.0/24', '10.1.1.0']],
+            ['fe80::1', ['192.168.0.0/24', 'fe80::1']],
+            ['fe80::abcd:10/126', ['192.168.0.0/24', 'fe80::abcd:10/126']],
+            [['10.1.1.1', 'fe80::1', '192.168.0.1/24'], ['192.168.0.0/24', '10.1.1.1', 'fe80::1']],
+        ];
+    }
+
+    /** @dataProvider dataAddAllowedIpOrNetwork */
+    public function testAddAllowedIpOrNetwork($input, $expected): void
+    {
+        $p = Factory::provider('Generic');
+        $p->addAllowedIpOrNetwork($input);
+
+        $info = $p->__debugInfo();
+        $this->assertEquals($expected, $info['allowed_ip']);
+    }
+
+    public function testSetAllowedIpOrNetwork(): void
+    {
+        $p = Factory::provider('Generic');
+        $p->setAllowedIpOrNetwork(['10.0.0.0/24']);
+
+        $info = $p->__debugInfo();
+        $this->assertEquals(['10.0.0.0/24'], $info['allowed_ip']);
+    }
+
+    public function testCheckClientIpNotSet(): void
+    {
+        $this->expectException(IpException::class);
+        $this->expectExceptionMessage('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
+        $p = Factory::provider('generic');
+        $p->process([]);
+    }
+
+    public function testCheckClientNotInNetwork(): void
+    {
+        $this->expectException(IpException::class);
+        $this->expectExceptionMessage('Client IP "10.0.0.1" is not in allowed list.');
+        $p = Factory::provider('generic', ['client_ip' => '10.0.0.1']);
+        $p->process([]);
     }
 
     public function testGetNotProcessed(): void
     {
-        $p = Client::getProvider('Generic');
+        $p = Factory::provider('Generic');
 
         $this->assertNull($p->getTime());
         $this->assertNull($p->getRecipient());
@@ -49,7 +118,7 @@ class AbstractProviderTest extends TestCase
         $expected = \DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new \DateTimeZone('UTC'));
 
         /** @var \WHEP\Provider\Generic $p */
-        $p = Client::getProvider('Generic');
+        $p = Factory::provider('Generic', ['client_ip' => '192.168.0.10']);
         $p->process(['smtp' => '552: Over quota', 'email' => ' Recipient.Name@Example.COM ']);
 
         $this->assertEquals($expected, $p->getTime());
@@ -68,11 +137,12 @@ class AbstractProviderTest extends TestCase
     {
         $mock = $this->createPartialMock(Generic::class, ['customCallback']);
         $config = [
+            'check_ip' => false,
             'callbacks' => [
                 ProviderInterface::EVENT_BOUNCE_QUOTA => [$mock, 'customCallback'],
             ],
         ];
-        $p = Client::getProvider('Generic', $config);
+        $p = Factory::provider('Generic', $config);
 
         $mock->expects($this->once())
             ->method('customCallback')
@@ -86,11 +156,12 @@ class AbstractProviderTest extends TestCase
     {
         $mock = $this->createPartialMock(Generic::class, ['customCallback']);
         $config = [
+            'check_ip' => false,
             'callbacks' => [
                 ProviderInterface::EVENT_BOUNCE_HARD => [$mock, 'customCallback'],
             ],
         ];
-        $p = Client::getProvider('Generic', $config);
+        $p = Factory::provider('Generic', $config);
 
         $mock->expects($this->never())
             ->method('customCallback');
@@ -104,20 +175,24 @@ class AbstractProviderTest extends TestCase
         ClockMock::register(AbstractProvider::class);
         $time = \DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new \DateTimeZone('UTC'));
 
-        $p = Client::getProvider('Generic');
+        $p = Factory::provider('Generic', ['check_ip' => false]);
         $data = ['smtp' => '552: Over quota'];
         $p->process($data);
 
         $result = $p->__debugInfo();
 
         $expected = [
+            'name' => 'generic',
+            'client_ip' => null,
+            'client_ip_checked' => false,
             'type' => 'quota',
             'time' => $time->format(DATE_ATOM),
-            'email' => null,
+            'recipient' => null,
             'details' => null,
             'smtp' => '552: Over quota',
             'url' => null,
             'raw' => $data,
+            'allowed_ip' => ['192.168.0.0/24'],
         ];
         $this->assertSame($expected, $result);
     }

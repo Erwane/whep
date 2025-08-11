@@ -22,7 +22,8 @@
     "require": {
         "php": "^8.1",
         "ext-mbstring": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "mlocati/ip-lib": "^1.0"
     },
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^5.0",
