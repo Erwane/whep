@@ -11,26 +11,26 @@ declare(strict_types=1);
 namespace WHEP\Test\TestCase;
 
 use PHPUnit\Framework\TestCase;
-use WHEP\Client;
+use WHEP\Exception\ProviderException;
+use WHEP\Factory;
 use WHEP\Provider\Generic;
-use WHEP\WebhookProviderException;
 
 /**
- * @uses   \WHEP\Client
- * @covers \WHEP\Client
+ * @uses   \WHEP\Factory
+ * @covers \WHEP\Factory
  */
-class ClientTest extends TestCase
+class FactoryTest extends TestCase
 {
-    public function testGetUnknownProvider(): void
+    public function testUnknownProvider(): void
     {
-        $this->expectException(WebhookProviderException::class);
+        $this->expectException(ProviderException::class);
 
-        Client::getProvider('unknown');
+        Factory::provider('unknown');
     }
 
-    public function testGetProvider(): void
+    public function testProvider(): void
     {
-        $provider = Client::getProvider('generic');
+        $provider = Factory::provider('generic');
 
         $this->assertEquals(Generic::class, get_class($provider));
     }

@@ -10,10 +10,12 @@ declare(strict_types=1);
 
 namespace WHEP;
 
+use WHEP\Exception\ProviderException;
+
 /**
- * WHEP base client.
+ * WHEP factory.
  */
-class Client
+class Factory
 {
     /**
      * Get emailing provider.
@@ -21,9 +23,9 @@ class Client
      * @param string $providerName Provider name
      * @param array $config Provider config
      * @return \WHEP\ProviderInterface
-     * @throws \WHEP\WebhookProviderException
+     * @throws \WHEP\Exception\ProviderException
      */
-    public static function getProvider(string $providerName, array $config = []): ProviderInterface
+    public static function provider(string $providerName, array $config = []): ProviderInterface
     {
         $class = '\WHEP\Provider\\' . ucfirst(strtolower($providerName));
 
@@ -35,7 +37,7 @@ class Client
             /** @var \WHEP\AbstractProvider $provider */
             $provider = new $class($config);
         } else {
-            throw new WebhookProviderException();
+            throw new ProviderException();
         }
 
         return $provider;

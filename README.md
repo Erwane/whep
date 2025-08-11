@@ -13,10 +13,11 @@ This project is not made to be used alone, you need to pick your providers handl
 
 ## Available providers handlers
 
-| Provider                                | Package            |
-|-----------------------------------------|--------------------|
-| [Postal](https://docs.postalserver.io/) | erwane/whep-postal |
-|                                         |                    |
+| Provider                                | Package                 |
+|-----------------------------------------|-------------------------|
+| [Brevo](https://www.brevo.com/)         | [erwane/whep-brevo](https://github.com/Erwane/whep-brevo)   |
+| [Mailjet](https://www.mailjet.com/)     | [erwane/whep-mailjet](https://github.com/Erwane/whep-mailjet) |
+| [Postal](https://docs.postalserver.io/) | [erwane/whep-postal](https://github.com/Erwane/whep-postal)  |
 
 ## Usage
 
@@ -25,26 +26,31 @@ composer require erwane/whep-<provider>
 ```
 
 ```php
-use WHEP\Client;
-
-$provider = Client::getProvider('<provider>', [
-    'callbacks' => [
-        ProviderInterface::EVENT_BLOCKED => [$this, 'callbackInvalidate'],
-        ProviderInterface::EVENT_BOUNCE_HARD => [$this, 'callbackInvalidate'],
-        ProviderInterface::EVENT_BOUNCE_QUOTA => [$this, 'callbackUnsub'],
-    ],
-]);
+use WHEP\Factory;
+use WHEP\Exception\IpException;
+use WHEP\Exception\ProviderException;
 
 try {
+    $provider = Factory::provider('<provider>', [
+        'client_ip' => $_SERVER['REMOTE_ADDR'] ?? null, // Use your framework correct method to get the client ip.
+        'callbacks' => [
+            ProviderInterface::EVENT_BLOCKED => [$this, 'callbackInvalidate'],
+            ProviderInterface::EVENT_BOUNCE_HARD => [$this, 'callbackInvalidate'],
+            ProviderInterface::EVENT_BOUNCE_QUOTA => [$this, 'callbackUnsub'],
+        ],
+    ]);
+
     // process the data.
     $provider->process($webhookData);
     
     // Data available from provider getters.
-    $email = $provider->getRecipient();
+    $recipient = $provider->getRecipient();
     
     // Launch callbacks
     $provider->callback();
-} catch (WebhookProviderException $e) {
+} catch (IpException $e) {
+    // log ?
+} catch (ProviderException $e) {
     // log ?
 }
 ```

@@ -13,7 +13,11 @@ namespace WHEP;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
+use IPLib\Address\AddressInterface;
+use IPLib\Factory as IpFactory;
+use IPLib\Range\RangeInterface;
 use ReflectionClass;
+use WHEP\Exception\IpException;
 use const DATE_ATOM;
 
 /**
@@ -95,20 +99,40 @@ abstract class AbstractProvider implements ProviderInterface
     protected $_raw = null;
 
     /**
+     * @var string[] Provider allowed ip and network
+     */
+    protected $_allowedIpAndNetwork = [];
+
+    /**
+     * @var array
+     */
+    private $_ipAndNetwork = [];
+
+    private $_clientIpChecked = false;
+
+    /**
      * Provider constructor.
      *
      * @param array $config Provider config
+     * @noinspection PhpDocMissingThrowsInspection
      */
     public function __construct(array $config = [])
     {
         $config += [
+            'client_ip' => null,
+            'allowed_ip' => [],
             'callbacks' => [],
+            'check_ip' => true, // Check client ip against allowed_ip list.
         ];
 
         $callbacks = array_merge($this->_defaultConfig['callbacks'], $config['callbacks']);
 
         $this->_config = array_merge($this->_defaultConfig, $config);
         $this->_config['callbacks'] = $callbacks;
+        $this->_config['client_ip'] = IpFactory::parseAddressString($config['client_ip']);
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->addAllowedIpOrNetwork(array_merge($this->_allowedIpAndNetwork, $config['allowed_ip']));
     }
 
     /**
@@ -190,6 +214,50 @@ abstract class AbstractProvider implements ProviderInterface
     }
 
     /**
+     * Add network or IP to allowed list.
+     *
+     * @param string[]|string $input Ip or CIDR network
+     * @return $this
+     * @throws \WHEP\Exception\IpException
+     */
+    public function addAllowedIpOrNetwork($input)
+    {
+        if (is_array($input)) {
+            foreach ($input as $item) {
+                $this->addAllowedIpOrNetwork($item);
+            }
+        } else {
+            $item = IpFactory::parseAddressString($input);
+            if ($item === null) {
+                $item = IpFactory::parseRangeString($input);
+                if ($item === null) {
+                    throw new IpException('Invalid ip or network.');
+                }
+            }
+
+            if (!in_array($item, $this->_ipAndNetwork)) {
+                $this->_ipAndNetwork[] = $item;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Reset and set allowed ip or network, ignoring default provider list.
+     *
+     * @param string[] $input Ip or CIDR network
+     * @return $this
+     * @throws \WHEP\Exception\IpException
+     */
+    public function setAllowedIpOrNetwork(array $input)
+    {
+        $this->_ipAndNetwork = [];
+
+        return $this->addAllowedIpOrNetwork($input);
+    }
+
+    /**
      * Process webhook data.
      *
      * @param array $data Emailing provider webhook data
@@ -197,10 +265,43 @@ abstract class AbstractProvider implements ProviderInterface
      */
     public function process(array $data)
     {
+        $this->_checkClientIp();
         $this->_load($data);
         $this->_typeFromResponse();
 
         return $this;
+    }
+
+    /**
+     * Check client_ip is in IP or network allowed list.
+     *
+     * @return void
+     * @throws \WHEP\Exception\IpException
+     */
+    protected function _checkClientIp(): void
+    {
+        if ($this->_config['check_ip']) {
+            if (!$this->_config['client_ip']) {
+                throw new IpException('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
+            }
+
+            $success = false;
+            $clientIp = $this->_config['client_ip'];
+            $clientComparableString = $clientIp->getComparableString();
+            foreach ($this->_ipAndNetwork as $item) {
+                if (
+                    ($item instanceof RangeInterface && $item->contains($clientIp))
+                    || ($item instanceof AddressInterface && $item->getComparableString() === $clientComparableString)
+                ) {
+                    $success = true;
+                    break;
+                }
+            }
+
+            if (!$success) {
+                throw new IpException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
+            }
+        }
     }
 
     /**
@@ -254,17 +355,26 @@ abstract class AbstractProvider implements ProviderInterface
     public function __debugInfo()
     {
         $debug = [
+            'name' => $this->getName(),
+            'client_ip' => $this->_config['client_ip'] !== null ? $this->_config['client_ip']->toString() : null,
+            'client_ip_checked' => $this->_clientIpChecked,
             'type' => $this->getType(),
             'time' => null,
-            'email' => $this->getRecipient(),
+            'recipient' => $this->getRecipient(),
             'details' => $this->getDetails(),
             'smtp' => $this->getSmtpResponse(),
             'url' => $this->getUrl(),
             'raw' => $this->getRaw(),
+            'allowed_ip' => [],
         ];
 
         if ($this->getTime()) {
             $debug['time'] = $this->getTime()->format(DATE_ATOM);
+        }
+
+        /** @var \IPLib\Address\AddressInterface|\IPLib\Range\RangeInterface $item */
+        foreach ($this->_ipAndNetwork as $item) {
+            $debug['allowed_ip'][] = $item->toString();
         }
 
         return $debug;
