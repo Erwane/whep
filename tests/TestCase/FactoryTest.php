@@ -10,13 +10,14 @@ declare(strict_types=1);
 
 namespace WHEP\Test\TestCase;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use WHEP\Exception\ProviderException;
 use WHEP\Factory;
 use WHEP\Provider\Generic;
 
-#[CoversClass(Factory::class)]
+/**
+ * @covers \WHEP\Factory
+ */
 class FactoryTest extends TestCase
 {
     public function testUnknownProvider(): void

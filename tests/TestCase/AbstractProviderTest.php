@@ -12,8 +12,6 @@ namespace TestCase;
 
 use DateTimeImmutable;
 use DateTimeZone;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use WHEP\AbstractProvider;
@@ -22,8 +20,10 @@ use WHEP\Factory;
 use WHEP\Provider\Generic;
 use WHEP\ProviderInterface;
 
-#[CoversClass(AbstractProvider::class)]
-#[Group('time-sensitive')]
+/**
+ * @covers \WHEP\AbstractProvider
+ * @group time-sensitive
+ */
 class AbstractProviderTest extends TestCase
 {
     public function testGetName(): void

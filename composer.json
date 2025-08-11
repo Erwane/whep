@@ -20,14 +20,14 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "8.0.*",
         "ext-mbstring": "*",
         "ext-json": "*",
         "mlocati/ip-lib": "^1.0"
     },
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^5.0",
-        "phpunit/phpunit": "^10.5",
+        "phpunit/phpunit": "^9.5",
         "symfony/phpunit-bridge": "^7.0",
         "symfony/var-dumper": "^v6.0"
     },
