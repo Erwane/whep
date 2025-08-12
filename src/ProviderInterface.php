@@ -91,10 +91,10 @@ interface ProviderInterface
      * Webhook data security by checking client ip or signing key.
      *
      * @param array $data Webhook data.
-     * @return void
+     * @return $this
      * @throws \WHEP\Exception\SecurityException
      */
-    public function checkSecurity(array $data);
+    public function checkSecurity(array $data): self;
 
     /**
      * Return the security check status.
@@ -109,12 +109,12 @@ interface ProviderInterface
      * @param array $data Webhook data
      * @return $this
      */
-    public function process(array $data);
+    public function process(array $data): self;
 
     /**
      * Call the correct callback if configured.
      *
      * @return $this
      */
-    public function callback();
+    public function callback(): self;
 }
