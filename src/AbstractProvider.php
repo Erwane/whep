@@ -316,7 +316,7 @@ abstract class AbstractProvider implements ProviderInterface
                 throw new SecurityException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
             }
 
-            $this->_securityChecked();
+            $this->_markSecurityAsChecked();
         }
     }
 
@@ -358,11 +358,19 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @return $this
      */
-    protected function _securityChecked()
+    protected function _markSecurityAsChecked()
     {
         $this->_securityChecked = true;
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function securityChecked(): bool
+    {
+        return $this->_securityChecked;
     }
 
     /**
@@ -391,7 +399,7 @@ abstract class AbstractProvider implements ProviderInterface
         $debug = [
             'name' => $this->getName(),
             'client_ip' => $this->_config['client_ip'] !== null ? $this->_config['client_ip']->toString() : null,
-            'security_checked' => $this->_securityChecked,
+            'security_checked' => $this->securityChecked(),
             'type' => $this->getType(),
             'time' => null,
             'recipient' => $this->getRecipient(),

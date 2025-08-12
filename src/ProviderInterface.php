@@ -97,6 +97,13 @@ interface ProviderInterface
     public function checkSecurity(array $data);
 
     /**
+     * Return the security check status.
+     *
+     * @return bool
+     */
+    public function securityChecked(): bool;
+
+    /**
      * Process webhook data.
      *
      * @param array $data Webhook data
