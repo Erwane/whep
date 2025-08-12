@@ -18,6 +18,7 @@ use IPLib\Factory as IpFactory;
 use IPLib\Range\RangeInterface;
 use ReflectionClass;
 use WHEP\Exception\IpException;
+use WHEP\Exception\SecurityException;
 use const DATE_ATOM;
 
 /**
@@ -26,6 +27,10 @@ use const DATE_ATOM;
 abstract class AbstractProvider implements ProviderInterface
 {
     protected $_defaultConfig = [
+        'check_ip' => true,
+        'client_ip' => null,
+        'allowed_ip' => [],
+        'signing_key' => null,
         'callbacks' => [
             ProviderInterface::EVENT_DEFERRED => null,
             ProviderInterface::EVENT_BOUNCE_SOFT => null,
@@ -116,7 +121,7 @@ abstract class AbstractProvider implements ProviderInterface
      */
     private $_ipAndNetwork = [];
 
-    private $_clientIpChecked = false;
+    private $_securityChecked = false;
 
     /**
      * Provider constructor.
@@ -127,10 +132,11 @@ abstract class AbstractProvider implements ProviderInterface
     public function __construct(array $config = [])
     {
         $config += [
+            'check_ip' => true,
             'client_ip' => null,
             'allowed_ip' => [],
+            'signing_key' => null,
             'callbacks' => [],
-            'check_ip' => true, // Check client ip against allowed_ip list.
         ];
 
         $callbacks = array_merge($this->_defaultConfig['callbacks'], $config['callbacks']);
@@ -177,7 +183,7 @@ abstract class AbstractProvider implements ProviderInterface
     public function getRecipient(): ?string
     {
         if ($this->_recipient) {
-            return trim(strtolower($this->_recipient));
+            return trim(mb_strtolower($this->_recipient));
         }
 
         return null;
@@ -270,11 +276,10 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @param array $data Emailing provider webhook data
      * @return $this
-     * @throws \WHEP\Exception\IpException
+     * @throws \WHEP\Exception\SecurityException
      */
     public function process(array $data)
     {
-        $this->_checkClientIp();
         $this->_load($data);
         $this->_typeFromResponse();
 
@@ -284,18 +289,18 @@ abstract class AbstractProvider implements ProviderInterface
     /**
      * Check client_ip is in IP or network allowed list.
      *
+     * @param \IPLib\Address\AddressInterface|null $clientIp Client ip
      * @return void
-     * @throws \WHEP\Exception\IpException
+     * @throws \WHEP\Exception\SecurityException
      */
-    protected function _checkClientIp(): void
+    protected function _checkClientIp(?AddressInterface $clientIp): void
     {
         if ($this->_config['check_ip']) {
-            if (!$this->_config['client_ip']) {
-                throw new IpException('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
+            if (!$clientIp) {
+                throw new SecurityException('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
             }
 
             $success = false;
-            $clientIp = $this->_config['client_ip'];
             $clientComparableString = $clientIp->getComparableString();
             foreach ($this->_ipAndNetwork as $item) {
                 if (
@@ -308,10 +313,10 @@ abstract class AbstractProvider implements ProviderInterface
             }
 
             if (!$success) {
-                throw new IpException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
+                throw new SecurityException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
             }
 
-            $this->_clientIpChecked = true;
+            $this->_securityChecked();
         }
     }
 
@@ -320,9 +325,12 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @param array $data Emailing provider webhook data
      * @return void
+     * @throws \WHEP\Exception\SecurityException
      */
     protected function _load(array $data): void
     {
+        $this->checkSecurity($data);
+
         $this->_time = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
         $this->_raw = $data;
 
@@ -343,6 +351,18 @@ abstract class AbstractProvider implements ProviderInterface
                 $this->_type = $responseType;
             }
         }
+    }
+
+    /**
+     * Set _securityChecked to true.
+     *
+     * @return $this
+     */
+    protected function _securityChecked()
+    {
+        $this->_securityChecked = true;
+
+        return $this;
     }
 
     /**
@@ -371,7 +391,7 @@ abstract class AbstractProvider implements ProviderInterface
         $debug = [
             'name' => $this->getName(),
             'client_ip' => $this->_config['client_ip'] !== null ? $this->_config['client_ip']->toString() : null,
-            'client_ip_checked' => $this->_clientIpChecked,
+            'security_checked' => $this->_securityChecked,
             'type' => $this->getType(),
             'time' => null,
             'recipient' => $this->getRecipient(),

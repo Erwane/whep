@@ -19,6 +19,14 @@ class Generic extends AbstractProvider
     /**
      * @inheritDoc
      */
+    public function checkSecurity(array $data)
+    {
+        $this->_checkClientIp($this->_config['client_ip']);
+    }
+
+    /**
+     * @inheritDoc
+     */
     protected function _load(array $data): void
     {
         parent::_load($data);
