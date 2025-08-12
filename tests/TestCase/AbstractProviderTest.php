@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Bridge\PhpUnit\ClockMock;
 use WHEP\AbstractProvider;
 use WHEP\Exception\IpException;
+use WHEP\Exception\SecurityException;
 use WHEP\Factory;
 use WHEP\Provider\Generic;
 use WHEP\ProviderInterface;
@@ -86,7 +87,7 @@ class AbstractProviderTest extends TestCase
 
     public function testCheckClientIpNotSet(): void
     {
-        $this->expectException(IpException::class);
+        $this->expectException(SecurityException::class);
         $this->expectExceptionMessage('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
         $p = Factory::provider('generic');
         $p->process([]);
@@ -94,7 +95,7 @@ class AbstractProviderTest extends TestCase
 
     public function testCheckClientNotInNetwork(): void
     {
-        $this->expectException(IpException::class);
+        $this->expectException(SecurityException::class);
         $this->expectExceptionMessage('Client IP "10.0.0.1" is not in allowed list.');
         $p = Factory::provider('generic', ['client_ip' => '10.0.0.1']);
         $p->process([]);
@@ -126,7 +127,7 @@ class AbstractProviderTest extends TestCase
         $this->assertEquals($expected, $p->getTime());
         $this->assertEquals(ProviderInterface::EVENT_BOUNCE_QUOTA, $p->getType());
         $this->assertSame('recipient.name@example.com', $p->getRecipient());
-        $this->assertTrue($p->__debugInfo()['client_ip_checked']);
+        $this->assertTrue($p->__debugInfo()['security_checked']);
     }
 
     public function testLoadNoType()
@@ -187,7 +188,7 @@ class AbstractProviderTest extends TestCase
         $expected = [
             'name' => 'generic',
             'client_ip' => null,
-            'client_ip_checked' => false,
+            'security_checked' => false,
             'type' => 'quota',
             'time' => $time->format(DATE_ATOM),
             'recipient' => null,

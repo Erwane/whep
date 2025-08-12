@@ -15,11 +15,6 @@ permissions:
 jobs:
   testsuite:
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        php-version:
-          - '8.0'
 
     steps:
     - uses: actions/checkout@v4
@@ -27,7 +22,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-version }}
+        php-version: '8.0'
         extensions: mbstring, intl
         ini-values: zend.assertions = 1
         coverage: pcov
@@ -42,12 +37,8 @@ jobs:
       env:
         XDEBUG_MODE: coverage
       run: |
-        if [[ '${{ matrix.php-version }}' == '8.1' ]]; then
           export CODECOVERAGE=1
           vendor/bin/phpunit --coverage-clover=coverage.xml
-        else
-          vendor/bin/phpunit
-        fi
 
     - name: Submit code coverage
       if: matrix.php-version == '8.0'
