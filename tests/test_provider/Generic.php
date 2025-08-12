@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace WHEP\Provider;
 
 use WHEP\AbstractProvider;
+use WHEP\ProviderInterface;
 
 class Generic extends AbstractProvider
 {
@@ -19,9 +20,11 @@ class Generic extends AbstractProvider
     /**
      * @inheritDoc
      */
-    public function checkSecurity(array $data)
+    public function checkSecurity(array $data): ProviderInterface
     {
         $this->_checkClientIp($this->_config['client_ip']);
+
+        return $this;
     }
 
     /**
