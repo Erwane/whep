@@ -56,3 +56,25 @@ jobs:
       with:
         files: coverage.xml
         token: ${{ secrets.CODECOV_TOKEN }}
+
+  cs-stan:
+    name: Coding Standard & Static Analysis
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4'
+        extensions: mbstring, intl
+        coverage: none
+        tools: phive, cs2pr
+
+    - name: Composer install
+      run: composer update
+
+    - name: Run phpcs
+      if: always()
+      run: vendor/bin/phpcs --report=checkstyle src/ tests/ | cs2pr
