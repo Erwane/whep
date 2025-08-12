@@ -26,7 +26,7 @@ use const DATE_ATOM;
  */
 abstract class AbstractProvider implements ProviderInterface
 {
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'check_ip' => true,
         'client_ip' => null,
         'allowed_ip' => [],
@@ -121,7 +121,7 @@ abstract class AbstractProvider implements ProviderInterface
      */
     private array $_ipAndNetwork = [];
 
-    private $_securityChecked = false;
+    private bool $_securityChecked = false;
 
     /**
      * Provider constructor.
