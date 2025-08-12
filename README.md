@@ -128,7 +128,7 @@ You can configure one callback by event type. Available callbacks are:
 | `ProviderInterface::EVENT_UNSUB`        | Recipient want to unsubscribed from you list.   |
 | `ProviderInterface::EVENT_ERROR`        | Provider error.                                 |
 
-## Provider getters
+## Provider methods
 
 ### getName(): string
 
@@ -161,3 +161,13 @@ The target click url. For `\WHEP\ProviderInterface::EVENT_CLICK` only.
 ### getRaw(bool $asJson = false)
 
 Event raw data as array. Is `$asJson` is `true` return json string.
+
+### process(array \$data): \$this
+
+Process the webhook data. Values are exploded and sets here.
+
+### callback(): \$this
+Call your related event type callable if configured.
+
+### securityChecked(): bool
+Return true if security was checked. Default to `false`.
