@@ -272,13 +272,11 @@ abstract class AbstractProvider implements ProviderInterface
     }
 
     /**
-     * Process webhook data.
+     * {@inheritDoc}
      *
-     * @param array $data Emailing provider webhook data
-     * @return $this
      * @throws \WHEP\Exception\SecurityException
      */
-    public function process(array $data)
+    public function process(array $data): self
     {
         $this->_load($data);
         $this->_typeFromResponse();
@@ -374,11 +372,9 @@ abstract class AbstractProvider implements ProviderInterface
     }
 
     /**
-     * Call configured callback type.
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function callback(): void
+    public function callback(): self
     {
         if ($this->_type) {
             foreach ($this->_config['callbacks'] as $type => $callable) {
@@ -387,6 +383,8 @@ abstract class AbstractProvider implements ProviderInterface
                 }
             }
         }
+
+        return $this;
     }
 
     /**
