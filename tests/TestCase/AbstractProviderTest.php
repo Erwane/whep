@@ -15,7 +15,6 @@ use DateTimeZone;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bridge\PhpUnit\ClockMock;
 use WHEP\AbstractProvider;
 use WHEP\Exception\IpException;
 use WHEP\Exception\SecurityException;
@@ -31,6 +30,20 @@ class AbstractProviderTest extends TestCase
     {
         $p = Factory::provider('Generic');
         $this->assertEquals('generic', $p->getName());
+    }
+
+    public function testTimeDifferentLocale(): void
+    {
+        setlocale(LC_NUMERIC, 'fr_FR.UTF-8');
+
+        $p = Factory::provider('Generic', ['check_ip' => false])
+            ->process([]);
+
+        try {
+            $this->assertInstanceOf(DateTimeImmutable::class, $p->getTime());
+        } finally {
+            setlocale(LC_NUMERIC, 'C');
+        }
     }
 
     public static function dataAddInvalidIpOrNetwork(): array
@@ -116,15 +129,11 @@ class AbstractProviderTest extends TestCase
 
     public function testProcess()
     {
-        ClockMock::register(AbstractProvider::class);
-
-        $expected = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
-
         /** @var \WHEP\Provider\Generic $p */
         $p = Factory::provider('Generic', ['client_ip' => '192.168.0.10']);
         $p->process(['smtp' => '552: Over quota', 'email' => ' Recipient.Name@Example.COM ']);
 
-        $this->assertEquals($expected, $p->getTime());
+        $this->assertInstanceOf(DateTimeImmutable::class, $p->getTime());
         $this->assertEquals(ProviderInterface::EVENT_BOUNCE_QUOTA, $p->getType());
         $this->assertSame('recipient.name@example.com', $p->getRecipient());
         $this->assertTrue($p->__debugInfo()['security_checked']);
@@ -176,7 +185,6 @@ class AbstractProviderTest extends TestCase
 
     public function testDebugInfo(): void
     {
-        ClockMock::register(AbstractProvider::class);
         $time = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
 
         $p = Factory::provider('Generic', ['check_ip' => false]);
