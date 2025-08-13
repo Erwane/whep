@@ -1,8 +1,8 @@
 # Webhooks Handler for Emailing providers
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![codecov](https://codecov.io/gh/Erwane/whep-client/branch/2.x/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep-client)
-[![Build Status](https://github.com/Erwane/whep-client/actions/workflows/ci.yml/badge.svg?branch=2.x)](https://github.com/Erwane/whep-client/actions)
+[![codecov](https://codecov.io/gh/Erwane/whep-client/branch/2.0/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep-client)
+[![CI](https://github.com/Erwane/whep-client/actions/workflows/ci.yml/badge.svg?branch=2.0)](https://github.com/Erwane/whep-client/actions)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/whep-client)](https://packagist.org/packages/Erwane/whep-client)
 [![Packagist Version](https://img.shields.io/packagist/v/Erwane/whep-client)](https://packagist.org/packages/Erwane/whep-client)
 
@@ -16,6 +16,7 @@ This project is not made to be used alone, you need to pick your providers handl
 | Provider                                | Package                                                       |
 |-----------------------------------------|---------------------------------------------------------------|
 | [Brevo](https://www.brevo.com/)         | [erwane/whep-brevo](https://github.com/Erwane/whep-brevo)     |
+| [Mailgun](https://www.mailgun.com/)     | [erwane/whep-mailgun](https://github.com/Erwane/whep-mailgun) |
 | [Mailjet](https://www.mailjet.com/)     | [erwane/whep-mailjet](https://github.com/Erwane/whep-mailjet) |
 | [Postal](https://docs.postalserver.io/) | [erwane/whep-postal](https://github.com/Erwane/whep-postal)   |
 
@@ -29,6 +30,7 @@ composer require erwane/whep-<provider>
 use WHEP\Factory;  
 use WHEP\Exception\SecurityException;  
 use WHEP\Exception\WHEPException;  
+use WHEP\ProviderInterface;  
 
 try {
     $provider = Factory::provider('<provider>', [
@@ -55,7 +57,7 @@ try {
 }
 ```
 
-## Provider options
+## Options
 
 You can pass options to `Factory::provider('<provider>', $options)` method.  
 All available options are:
@@ -103,13 +105,13 @@ The validation is done during `ProviderInterface::process()`
 
 ### Callbacks
 Your callback method are cast when `$provider->callback()` is called (you decide when).
-See [Available callbacks](#available-callbacks) section for details.
+See [Event type & Callbacks](#event-type--callbacks) section for details.
 
 ```php
 Factory::provider('<provider>', ['callbacks' => [ProviderInterface::EVENT_UNSUB => [$this, 'callbackUnsub']]]);
 ```
 
-#### Available callbacks
+#### Event type & Callbacks
 
 You can configure one callback by event type. Available callbacks are:
 
@@ -128,46 +130,110 @@ You can configure one callback by event type. Available callbacks are:
 | `ProviderInterface::EVENT_UNSUB`        | Recipient want to unsubscribed from you list.   |
 | `ProviderInterface::EVENT_ERROR`        | Provider error.                                 |
 
-## Provider methods
+## Methods
 
-### getName(): string
+ProviderInterface has the following methods:
+- [getName()](#getname)
+- [getTime()](#gettime)
+- [getType()](#gettype)
+- [getRecipient()](#getrecipient)
+- [getDetails()](#getdetails)
+- [getSmtpResponse()](#getsmtpresponse)
+- [getUrl()](#geturl)
+- [getRaw()](#getraw)
+- [process()](#process)
+- [callback()](#callback)
+- [securityChecked()](#securitychecked)
+
+### getName()
 
 Return provider name.
+```php
+echo $provider->getName();
+```
 
-### getTime(): \DateTimeInterface
+### getTime()
 
-Get when event time was received by your webhook listener. This is not the emit time.
+Get event time as `\DateTimeInterface`. This represents when hook was received, not event time.
+```php
+$time = $provider->getTime();
+```
 
-### getType(): ?string
+### getType()
 
-Event type. Match it with `\WHEP\ProviderInterface::EVENT_xyz` constants.
+Return event type. See [Event type & Callbacks](#event-type--callbacks) for all types.
+```php
+if ($provider->getType() === \WHEP\ProviderInterface::EVENT_UNSUB) {
+    // Do something
+}
+```
 
-### getRecipient(): ?string
+### getRecipient()
 
-The event related e-mail recipient.
+Return event related e-mail recipient.
+```php
+echo $provider->getRecipient();
+```
 
-### getDetails(): ?string
+### getDetails()
 
-Event detail provided by event emitter. The content depends on the provider.
+Return provider event details (or reason).
+```php
+echo $provider->getDetails();
+```
 
-### getSmtpResponse(): ?string
+### getSmtpResponse()
 
-Recipient MX SMTP response.
+Return recipient MX SMTP response.
+```php
+echo $provider->getSmtpResponse();
+```
 
-### getUrl(): ?string
+### getUrl()
 
-The target click url. For `\WHEP\ProviderInterface::EVENT_CLICK` only.
+Return url of clicked link. Available for `\WHEP\ProviderInterface::EVENT_CLICK` only.  
+Some providers (mailgun) do not return this information.
+```php
+echo $provider->getUrl();
+```
 
-### getRaw(bool $asJson = false)
+### getRaw()
 
-Event raw data as array. Is `$asJson` is `true` return json string.
+Return event raw data as array by default. Return as json if `$asJson` is `true`.
+```php
+$raw = $provider->getRaw();
 
-### process(array \$data): \$this
+// raw data in json format.
+echo $provider->getRaw(true);
+```
 
-Process the webhook data. Values are exploded and sets here.
+### process()
 
-### callback(): \$this
-Call your related event type callable if configured.
+Process the webhook data. This method is chainable.
+```php
+$provider = \WHEP\Factory::provider('mailgun')
+    ->process($webhookData);
+```
 
-### securityChecked(): bool
+### callback()
+
+Run you related event type callable if configured.
+```php
+// This will process data and call self::callbackUnsub($provider) if event is unsub.
+$provider = \WHEP\Factory::provider('mailgun', [
+    'callbacks' => [
+        \WHEP\ProviderInterface::EVENT_UNSUB => [$this, 'callbackUnsub'],
+    ],
+])
+    ->process($webhookData)
+    ->callback();
+```
+
+### securityChecked()
+
 Return true if security was checked. Default to `false`.
+```php
+if (!$provider->securityChecked()) {
+    // Your webhook url deserve security.
+}
+```
