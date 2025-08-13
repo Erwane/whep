@@ -1,0 +1,17 @@
+# grumphp.yml
+grumphp:
+  ascii:
+    failed: ~
+    succeeded: ~
+  fixer:
+    enabled: true
+    fix_by_default: false
+  tasks:
+    phplint:
+      ignore_patterns:
+        - /^.idea\/(.*)/
+    phpcs:
+      whitelist_patterns:
+        - /^src\/(.*)/
+        - /^tests\/(.*)/
+    phpunit:
