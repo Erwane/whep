@@ -279,6 +279,7 @@ abstract class AbstractProvider implements ProviderInterface
 
     /**
      * {@inheritDoc}
+     *
      * @throws \WHEP\Exception\SecurityException
      */
     public function process(array $data): ProviderInterface
