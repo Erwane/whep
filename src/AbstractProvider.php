@@ -279,7 +279,6 @@ abstract class AbstractProvider implements ProviderInterface
 
     /**
      * {@inheritDoc}
-     *
      * @throws \WHEP\Exception\SecurityException
      */
     public function process(array $data): ProviderInterface
@@ -335,7 +334,8 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $this->checkSecurity($data);
 
-        $this->_time = DateTimeImmutable::createFromFormat('U.u e', microtime(true) . ' UTC', new DateTimeZone('UTC'));
+        $time = sprintf('%F', microtime(true));
+        $this->_time = DateTimeImmutable::createFromFormat('U.u e', $time . ' UTC', new DateTimeZone('UTC'));
         $this->_raw = $data;
 
         $event = $data['event'] ?? null;

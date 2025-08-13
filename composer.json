@@ -4,7 +4,7 @@
     "type": "library",
     "keywords": [
         "webhook",
-        "client"
+        "emailing"
     ],
     "homepage": "https://github.com/Erwane/whep-client",
     "support": {
@@ -28,7 +28,6 @@
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^4.0",
         "phpunit/phpunit": "^8.5",
-        "symfony/phpunit-bridge": "^7.0",
         "symfony/var-dumper": "^v5.0"
     },
     "autoload": {
