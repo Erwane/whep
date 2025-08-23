@@ -51,6 +51,11 @@ class MxDetector
             'method' => '_endsWith',
             'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
+        [
+            'needle' => 'user quota exceeded',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
+        ],
 
         // Hard
         [
