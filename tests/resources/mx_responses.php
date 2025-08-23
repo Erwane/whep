@@ -11,11 +11,12 @@ use WHEP\ProviderInterface;
 
 return [
     ProviderInterface::EVENT_BOUNCE_QUOTA => [
+        'free_1' => '552 5.2.2 user quota exceeded (UserSearch)',
         'gmail_1' => "452-4.2.2 The recipient's inbox is out of storage space. Please direct the\n452-4.2.2 recipient to\n452 4.2.2  https://support.google.com/mail/?p=OverQuotaTemp ffacd0b85a97d-3b76fcff3f8si2004203f8f.527 - gsmtp",
+        'icloud_1' => '552 5.2.2 <recipient@example.com>: user is over quota',
+        'ionos_1' => '552-Requested mail action aborted: exceeded storage allocation',
         'laposte_1' => '552 5.2.2 \u003postmaster@laposte.net\u003e: Over quota',
         'orange_1' => '552 5.1.1 hibJumn68I371 Boite du destinataire pleine. Recipient overquota. OFR_417 [417]',
-        'ionos_1' => '552-Requested mail action aborted: exceeded storage allocation',
-        'icloud_1' => '552 5.2.2 <recipient@example.com>: user is over quota',
     ],
     ProviderInterface::EVENT_BOUNCE_SOFT => [
     ],
