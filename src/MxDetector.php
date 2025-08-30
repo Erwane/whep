@@ -48,12 +48,12 @@ class MxDetector
         ],
         [
             'needle' => 'exceeded storage allocation',
-            'method' => '_endsWith',
+            'method' => '_contains',
             'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
         [
-            'needle' => 'user quota exceeded',
-            'method' => '_contains',
+            'needle' => '/(user|Mailbox) quota exceeded/',
+            'method' => '_regex',
             'type' => ProviderInterface::EVENT_BOUNCE_QUOTA,
         ],
 
@@ -146,6 +146,6 @@ class MxDetector
      */
     protected static function _regex(string $haystack, string $pattern): bool
     {
-        return preg_match($pattern, $haystack);
+        return (bool)preg_match($pattern, $haystack);
     }
 }
