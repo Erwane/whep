@@ -44,6 +44,7 @@ abstract class AbstractProvider implements ProviderInterface
             ProviderInterface::EVENT_ABUSE => null,
             ProviderInterface::EVENT_UNSUB => null,
             ProviderInterface::EVENT_ERROR => null,
+            ProviderInterface::EVENT_BLOCKLIST => null,
         ],
     ];
 
