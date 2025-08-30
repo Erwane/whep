@@ -29,6 +29,7 @@ interface ProviderInterface
     public const EVENT_ABUSE = 'abuse';
     public const EVENT_UNSUB = 'unsubscribed';
     public const EVENT_ERROR = 'error';
+    public const EVENT_BLOCKLIST = 'blocklist';
 
     /**
      * Get provider name.
