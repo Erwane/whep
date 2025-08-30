@@ -27,6 +27,9 @@ return [
         'gmail_1' => "552-5.2.2 The recipient's inbox is out of storage space and inactive. Please\n552-5.2.2 direct the recipient to\n552 5.2.2  https://support.google.com/mail/?p=OverQuotaPerm 5b1f17b1804b1-45871daec68si13206435e9.59 - gsmtp",
         'orange_1' => '550 5.1.1 hhtzumeItI371 Adresse d au moins un destinataire invalide. Invalid recipient. OFR_416 [416]',
     ],
+    ProviderInterface::EVENT_BLOCKLIST => [
+        'microsoft_1' => "550 5.7.1 Unfortunately, messages from [0.0.0.0] weren't sent. Please contact your Internet service provider since part of their network is on our block list (S3150). You can also refer your provider to http://mail.live.com/mail/troubleshooting",
+    ],
     ProviderInterface::EVENT_ERROR => [
         't-online_1' => '554 IP=1.2.3.4 - None/bad reputation. Ask your postmaster for help or to contact tobr@rx.t-online.de for reset. (NOWL)',
     ],

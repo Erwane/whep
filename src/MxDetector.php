@@ -69,6 +69,13 @@ class MxDetector
             'type' => ProviderInterface::EVENT_BOUNCE_HARD,
         ],
 
+        // Blocklist
+        [
+            'needle' => 'is on our block list',
+            'method' => '_contains',
+            'type' => ProviderInterface::EVENT_BLOCKLIST,
+        ],
+
         // Error
         [
             'needle' => 'None/bad reputation',
