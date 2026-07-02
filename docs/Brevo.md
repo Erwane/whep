@@ -11,7 +11,7 @@ use WHEP\Factory;
 
 try {
     $provider = Factory::provider('brevo', [
-        'client_ip' => $_SERVER['REMOTE_ADDR'] ?? null, // Use method from your framework to get the ServerRequest client ip.
+        'remote_ip' => $_SERVER['REMOTE_ADDR'] ?? null, // Use method from your framework to get the ServerRequest client ip.
         'callbacks' => [
             ProviderInterface::EVENT_BLOCKED => [$this, 'callbackInvalidate'],
             ProviderInterface::EVENT_BOUNCE_QUOTA => [$this, 'callbackUnsub'],

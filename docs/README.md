@@ -12,7 +12,7 @@
 You can pass options to `Factory::provider('<provider>', $options)` method.  
 All available options are:
 
-* `client_ip`: The client IP who request your url. Default `null`
+* `remote_ip`: The remote IP who request your url. Default `null`
 * `allowed_ip`: Array of IPv4/IPv6 network (range) and allowed IP. Default depends on provider.
 * `check_ip`: Set to false to bypass security IP check. Default is `false`.
 * `signing_key`: Your provider private key to validate request came from trusted provider. Default `null`
@@ -25,17 +25,17 @@ Some providers use a signing key to validate data or provide an IP addresses lis
 
 #### IP validation
 
-When provider publish his IP addresses, you should pass the webhook client IP to the provider.
+When provider publish his IP addresses, you should pass the webhook remote IP to the provider.
 
 ```php
-Factory::provider('mailjet', ['client_ip' => $_SERVER['REMOTE_ADDR'] ?? null]);
+Factory::provider('mailjet', ['remote_ip' => $_SERVER['REMOTE_ADDR'] ?? null]);
 ```
 
 When provider is self-hosted, like [Postal](Postal.md), you can pass your postal server IP.
 
 ```php
 Factory::provider('postal', [
-    'client_ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+    'remote_ip' => $_SERVER['REMOTE_ADDR'] ?? null,
     'allowed_ip' => [
         '10.0.0.1',
         'fe80::0023:1',

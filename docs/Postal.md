@@ -12,7 +12,7 @@ use WHEP\Factory;
 try {
     $provider = Factory::provider('postal', [
         'allowed_ip' => ['my.postal.server.ipv4', 'my:postal:server::ipv6'],
-        'client_ip' => $_SERVER['REMOTE_ADDR'] ?? null, // Use method from your framework to get the ServerRequest client ip.
+        'remote_ip' => $_SERVER['REMOTE_ADDR'] ?? null, // Use method from your framework to get the ServerRequest client ip.
         'callbacks' => [
             ProviderInterface::EVENT_BLOCKED => [$this, 'callbackInvalidate'],
             ProviderInterface::EVENT_BOUNCE_QUOTA => [$this, 'callbackUnsub'],
@@ -40,7 +40,7 @@ Add your self-hosted postal IP to `allowed_ip`.
 
 ```php
 Factory::provider('postal', [
-    'client_ip' => $_SERVER['REMOTE_ADDR'] ?? null,
+    'remote_ip' => $_SERVER['REMOTE_ADDR'] ?? null,
     'allowed_ip' => [
         '10.0.0.1',
         'fe80::0023:1',

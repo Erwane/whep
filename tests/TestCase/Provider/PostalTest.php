@@ -139,7 +139,7 @@ class PostalTest extends TestCase
         $json = File::getContent('postal/' . $resource);
         $data = json_decode($json, true);
 
-        $p = Factory::provider('postal', ['allowed_ip' => ['192.168.0.1'], 'client_ip' => '192.168.0.1']);
+        $p = Factory::provider('postal', ['allowed_ip' => ['192.168.0.1'], 'remote_ip' => '192.168.0.1']);
         $p->process($data);
 
         $this->assertEquals($type, $p->getType());

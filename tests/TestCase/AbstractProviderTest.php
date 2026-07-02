@@ -12,6 +12,7 @@ namespace TestCase;
 
 use DateTimeImmutable;
 use DateTimeZone;
+use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -98,19 +99,19 @@ class AbstractProviderTest extends TestCase
         $this->assertEquals(['10.0.0.0/24'], $info['allowed_ip']);
     }
 
-    public function testCheckClientIpNotSet(): void
+    public function testCheckRemoteIpNotSet(): void
     {
         $this->expectException(SecurityException::class);
-        $this->expectExceptionMessage('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
+        $this->expectExceptionMessage('Remote IP not set. Pass `remote_ip` to `Factory::provider()`.');
         $p = Factory::provider('generic');
         $p->process([]);
     }
 
-    public function testCheckClientNotInNetwork(): void
+    public function testCheckRemoteNotInNetwork(): void
     {
         $this->expectException(SecurityException::class);
-        $this->expectExceptionMessage('Client IP "10.0.0.1" is not in allowed list.');
-        $p = Factory::provider('generic', ['client_ip' => '10.0.0.1']);
+        $this->expectExceptionMessage('Remote IP "10.0.0.1" is not in allowed list.');
+        $p = Factory::provider('generic', ['remote_ip' => '10.0.0.1']);
         $p->process([]);
     }
 
@@ -130,7 +131,7 @@ class AbstractProviderTest extends TestCase
     public function testProcess()
     {
         /** @var \WHEP\Provider\Generic $p */
-        $p = Factory::provider('Generic', ['client_ip' => '192.168.0.10']);
+        $p = Factory::provider('Generic', ['remote_ip' => '192.168.0.10']);
         $p->process(['smtp' => '552: Over quota', 'email' => ' Recipient.Name@Example.COM ']);
 
         $this->assertInstanceOf(DateTimeImmutable::class, $p->getTime());
@@ -157,11 +158,13 @@ class AbstractProviderTest extends TestCase
         ];
         $p = Factory::provider('Generic', $config);
 
-        $mock->expects($this->once())
+        $mock
+            ->expects($this->once())
             ->method('customCallback')
             ->with($p);
 
-        $p->process(['smtp' => '552: Over quota'])
+        $p
+            ->process(['smtp' => '552: Over quota'])
             ->callback();
     }
 
@@ -176,10 +179,12 @@ class AbstractProviderTest extends TestCase
         ];
         $p = Factory::provider('Generic', $config);
 
-        $mock->expects($this->never())
+        $mock
+            ->expects($this->never())
             ->method('customCallback');
 
-        $p->process(['smtp' => '552: Over quota'])
+        $p
+            ->process(['smtp' => '552: Over quota'])
             ->callback();
     }
 
@@ -195,7 +200,7 @@ class AbstractProviderTest extends TestCase
 
         $expected = [
             'name' => 'generic',
-            'client_ip' => null,
+            'remote_ip' => null,
             'security_checked' => false,
             'type' => 'quota',
             'time' => $time->format(DATE_ATOM),
@@ -207,5 +212,25 @@ class AbstractProviderTest extends TestCase
             'allowed_ip' => ['192.168.0.0/24'],
         ];
         $this->assertSame($expected, $result);
+    }
+
+    public function testClientIpEmmitDeprecation(): void
+    {
+        set_error_handler(static function (int $errno, string $errstr): never {
+            throw new Exception($errstr, $errno);
+        }, E_USER_DEPRECATED);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Since WHEP 3.0: `client_ip` is deprecated, use `remote_ip` instead.');
+
+        Factory::provider('Generic', ['client_ip' => '192.168.0.1']);
+    }
+
+    public function testClientIpIsConvertedToRemoteIp(): void
+    {
+        $p = Factory::provider('Generic', ['client_ip' => '192.168.0.1']);
+        $p->process(['smtp' => '552: Over quota', 'email' => ' Recipient.Name@Example.COM ']);
+
+        $this->assertEquals('recipient.name@example.com', $p->getRecipient());
     }
 }

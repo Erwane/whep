@@ -22,7 +22,7 @@ class MailjetTest extends TestCase
 {
     public function testCheckIp(): void
     {
-        $p = Factory::provider('mailjet', ['client_ip' => '185.211.120.0']);
+        $p = Factory::provider('mailjet', ['remote_ip' => '185.211.120.0']);
         $p->process([]);
         $this->assertTrue($p->securityChecked());
     }

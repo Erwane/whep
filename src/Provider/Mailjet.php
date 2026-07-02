@@ -44,7 +44,7 @@ class Mailjet extends AbstractProvider
      */
     public function checkSecurity(array $data): ProviderInterface
     {
-        $this->_checkClientIp($this->_config['client_ip']);
+        $this->_checkClientIp($this->_config['remote_ip']);
 
         return $this;
     }

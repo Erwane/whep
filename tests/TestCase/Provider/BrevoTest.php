@@ -22,7 +22,7 @@ class BrevoTest extends TestCase
 {
     public function testCheckIp(): void
     {
-        $p = Factory::provider('brevo', ['client_ip' => '1.179.121.81']);
+        $p = Factory::provider('brevo', ['remote_ip' => '1.179.121.81']);
         $p->process([]);
         $this->assertTrue($p->securityChecked());
     }

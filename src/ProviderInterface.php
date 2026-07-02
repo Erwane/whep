@@ -89,7 +89,7 @@ interface ProviderInterface
     public function getRaw(bool $asJson = false): array|string|null;
 
     /**
-     * Webhook data security by checking client ip or signing key.
+     * Webhook data security by checking remote ip or signing key.
      *
      * @param array $data Webhook data.
      * @return $this
