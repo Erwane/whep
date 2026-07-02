@@ -14,6 +14,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ResourceHelper\File;
+use WHEP\Exception\SecurityException;
 use WHEP\Factory;
 use WHEP\Provider\Postal;
 use WHEP\ProviderInterface;
@@ -21,6 +22,66 @@ use WHEP\ProviderInterface;
 #[CoversClass(Postal::class)]
 class PostalTest extends TestCase
 {
+    public function testCheckSecuritySuccess(): void
+    {
+        $p = Factory::provider('postal', [
+            'remote_ip' => '192.168.0.1',
+            'allowed_ip' => ['192.168.0.1'],
+        ]);
+        $p->checkSecurity([]);
+        $this->assertTrue($p->securityChecked());
+    }
+
+    public static function dataTypesMap(): array
+    {
+        return [
+            [
+                ['event' => 'SoftFail'],
+                ProviderInterface::EVENT_BOUNCE_SOFT,
+            ],
+            [
+                ['event' => 'HardFail'],
+                ProviderInterface::EVENT_BOUNCE_HARD,
+            ],
+            [
+                ['event' => 'MessageBounced'],
+                ProviderInterface::EVENT_BOUNCE_HARD,
+            ],
+            [
+                ['event' => 'Held'],
+                ProviderInterface::EVENT_BLOCKED,
+            ],
+            [
+                ['event' => 'Sent'],
+                ProviderInterface::EVENT_SENT,
+            ],
+            [
+                ['event' => 'MessageLoaded'],
+                ProviderInterface::EVENT_OPENED,
+            ],
+            [
+                ['event' => 'MessageLinkClicked'],
+                ProviderInterface::EVENT_CLICK,
+            ],
+            [
+                ['event' => 'DomainDNSError'],
+                ProviderInterface::EVENT_ERROR,
+            ],
+        ];
+    }
+
+    #[DataProvider('dataTypesMap')]
+    public function testTypesMap($data, $expected): void
+    {
+        $p = Factory::provider('postal', [
+            'remote_ip' => '192.168.0.1',
+            'allowed_ip' => ['192.168.0.1'],
+        ]);
+
+        $p->process($data);
+        $this->assertEquals($expected, $p->getType());
+    }
+
     public function testLoadNoData(): void
     {
         $p = Factory::provider('postal', ['check_ip' => false]);
