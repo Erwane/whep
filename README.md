@@ -6,10 +6,17 @@
 [![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/whep)](https://packagist.org/packages/Erwane/whep)
 [![Packagist Version](https://img.shields.io/packagist/v/Erwane/whep)](https://packagist.org/packages/Erwane/whep)
 
-This is the base project to easily handle webhooks sent by different emailing providers and uniformizing in
-a comprehensive object.
+Standardizes data from emailing providers webhooks.  
+Trigger callbacks on specific events.  
+Security check.  
 
-## Migrating to v3
+Multiple providers supported:
+* Brevo
+* Mailgun
+* Mailjet
+* Postal (self-hosted)
+
+## Migrating from v2
 
 With v3, all providers are included into this lib, so, you don't need providers children packages anymore.
 

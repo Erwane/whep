@@ -1,11 +1,38 @@
 # Webhooks Handler for Emailing Providers documentation
 
-## Examples
+## Quick example
 
-* [Brevo](https://www.brevo.com/): [WHEP documentation](Brevo.md)
-* [Mailgun](https://www.mailgun.com/): [WHEP documentation](Mailgun.md)
-* [Mailjet](https://www.mailjet.com/): [WHEP documentation](Mailjet.md)
-* [Postal](https://docs.postalserver.io/): [WHEP documentation](Postal.md)
+```php
+use WHEP\Factory;  
+use WHEP\Exception\SecurityException;  
+use WHEP\Exception\WHEPException;  
+use WHEP\ProviderInterface;  
+
+try {
+    $provider = Factory::provider('<provider>', [
+        'remote_ip' => $_SERVER['REMOTE_ADDR'] ?? null, // Use your framework correct method to get the client ip.
+        'callbacks' => [
+            ProviderInterface::EVENT_BLOCKED => [$this, 'callbackInvalidate'],
+            ProviderInterface::EVENT_BOUNCE_HARD => [$this, 'callbackInvalidate'],
+            ProviderInterface::EVENT_BOUNCE_QUOTA => [$this, 'callbackUnsub'],
+        ],
+    ]);
+
+    // process the data.
+    $provider->process($webhookData);
+    
+    // Data available from provider getters.
+    $recipient = $provider->getRecipient();
+    
+    // Launch callback
+    $provider->callback();
+} catch (SecurityException $e) {
+    // log ?
+} catch (WHEPException $e) {
+    // log ?
+}
+```
+
 
 ## Options
 
@@ -208,3 +235,10 @@ if (!$provider->securityChecked()) {
     // Your webhook url deserve security.
 }
 ```
+
+## Examples
+
+* [Brevo](https://www.brevo.com/): [WHEP documentation](Brevo.md)
+* [Mailgun](https://www.mailgun.com/): [WHEP documentation](Mailgun.md)
+* [Mailjet](https://www.mailjet.com/): [WHEP documentation](Mailjet.md)
+* [Postal](https://docs.postalserver.io/): [WHEP documentation](Postal.md)
