@@ -1,0 +1,31 @@
+{
+    "event": "MessageBounced",
+    "timestamp": 1754025117.1165,
+    "payload": {
+        "original_message": {
+            "id": 302797,
+            "token": "NsuzDpKpxaKhvFwJ",
+            "direction": "outgoing",
+            "message_id": "ba2c44263c1c489cbec233abee68a61a@example.com",
+            "to": "recipient@example.com",
+            "from": "noreply@example.com",
+            "subject": "My Newsletter",
+            "timestamp": 1754025038.9160051,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "bounce": {
+            "id": 302861,
+            "token": "M4MUJwjaY5WsOUWA",
+            "direction": "incoming",
+            "message_id": "626525bd-02ce-4350-8172-c57b0d8417b5@example.intra",
+            "to": "d8df8x@psrp.example.com",
+            "from": null,
+            "subject": "Non remis : My Newsletter",
+            "timestamp": 1754025099.203049,
+            "spam_status": "NotChecked",
+            "tag": null
+        }
+    },
+    "uuid": "47f6816a-786f-4cac-8d6e-0ced6261c716"
+}

@@ -1,0 +1,20 @@
+{
+    "event": "MessageLoaded",
+    "timestamp": 1753375951.6504462,
+    "payload": {
+        "ip_address": "10.1.2.3",
+        "user_agent": "Mozilla/5.0",
+        "message": {
+            "id": 12345,
+            "token": "abcdef123",
+            "direction": "outgoing",
+            "message_id": "5817a64332f44_4ec93ff59e79d154565eb@app34.mail",
+            "to": "test@example.com",
+            "from": "sales@awesomeapp.com",
+            "subject": "Welcome to AwesomeApp",
+            "timestamp": 1477945177.12994,
+            "spam_status": "NotSpam",
+            "tag": "welcome"
+        }
+    }
+}

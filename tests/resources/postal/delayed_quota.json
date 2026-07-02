@@ -1,0 +1,25 @@
+{
+    "event": "MessageDelayed",
+    "timestamp": 1753443499.435643,
+    "payload": {
+        "message": {
+            "id": 6,
+            "token": "MyTok3n",
+            "direction": "outgoing",
+            "message_id": "f1e683b1bd234fb390bc95fb09c2147b@company.com",
+            "to": "recipient@example.com",
+            "from": "noreply@company.com",
+            "subject": "My Newsletter",
+            "timestamp": 1753420822.026331,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "status": "SoftFail",
+        "details": "Temporary SMTP delivery error when sending to 1.2.3.4:25 (gmail-smtp-in.l.google.com)",
+        "output": "452-4.2.2 The recipient's inbox is out of storage space. Please direct the",
+        "sent_with_ssl": true,
+        "timestamp": 1753443499.4296186,
+        "time": 0.23
+    },
+    "uuid": "75f40800-8a21-4976-8dce-acb345311a5a"
+}
