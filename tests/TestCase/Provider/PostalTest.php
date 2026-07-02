@@ -14,7 +14,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ResourceHelper\File;
-use WHEP\Exception\SecurityException;
 use WHEP\Factory;
 use WHEP\Provider\Postal;
 use WHEP\ProviderInterface;
