@@ -1,7 +1,7 @@
 # Webhooks Handler for Emailing providers
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![codecov](https://codecov.io/gh/Erwane/whep/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep)
+[![codecov](https://codecov.io/gh/Erwane/whep/graph/badge.svg?token=K9KMEHZWRD)](https://codecov.io/gh/Erwane/whep)
 [![CI](https://github.com/Erwane/whep/actions/workflows/ci.yml/badge.svg)](https://github.com/Erwane/whep/actions)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/whep)](https://packagist.org/packages/Erwane/whep)
 [![Packagist Version](https://img.shields.io/packagist/v/Erwane/whep)](https://packagist.org/packages/Erwane/whep)
