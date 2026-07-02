@@ -1,0 +1,25 @@
+{
+    "event": "MessageDeliveryFailed",
+    "timestamp": 1753420882.8921442,
+    "payload": {
+        "message": {
+            "id": 7,
+            "token": "MyTok3n",
+            "direction": "outgoing",
+            "message_id": "43fd16e8c8e7416292d851fdaa6f5782@company.com",
+            "to": "recipient@example.com",
+            "from": "noreply@company.com",
+            "subject": "My Newsletter",
+            "timestamp": 1753420857.404377,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "status": "HardFail",
+        "details": "Permanent SMTP delivery error when sending to 1.2.3.4:25 (mx.com)",
+        "output": "550 5.4.1 Recipient address rejected: Access denied.",
+        "sent_with_ssl": true,
+        "timestamp": 1753420882.8845162,
+        "time": 0.35
+    },
+    "uuid": "7cbf5ce3-10e6-4ea9-9da5-4dbd613a70ec"
+}

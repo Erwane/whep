@@ -1,0 +1,25 @@
+{
+    "event": "MessageDelayed",
+    "timestamp": 1753691992.183577,
+    "payload": {
+        "message": {
+            "id": 4,
+            "token": "MyTok3n",
+            "direction": "outgoing",
+            "message_id": "7bc32802e08b4e2b87244fb9a93a5d4f@company.com",
+            "to": "Recipient.Name@example.com",
+            "from": "noreply@company.com",
+            "subject": "My Newsletter",
+            "timestamp": 1753678839.148832,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "status": "SoftFail",
+        "details": "No SMTP servers were available.",
+        "output": "554 IP=1.2.3.4 - None/bad reputation.",
+        "sent_with_ssl": false,
+        "timestamp": 1753691992.178862,
+        "time": null
+    },
+    "uuid": "f8426ef7-0b9d-4a4a-a310-516b2ccb22e6"
+}

@@ -1,15 +1,16 @@
 {
-    "name": "erwane/whep-client",
+    "name": "erwane/whep",
     "description": "Webhooks handler for emailing providers.",
     "type": "library",
+    "version": "3.0.0",
     "keywords": [
         "webhook",
         "emailing"
     ],
-    "homepage": "https://github.com/Erwane/whep-client",
+    "homepage": "https://github.com/Erwane/whep",
     "support": {
-        "issues": "https://github.com/Erwane/whep-client/issues",
-        "source": "https://github.com/Erwane/whep-client"
+        "issues": "https://github.com/Erwane/whep/issues",
+        "source": "https://github.com/Erwane/whep"
     },
     "license": "MIT",
     "authors": [
@@ -27,8 +28,9 @@
     },
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^5.0",
+        "dflydev/dot-access-data": "^3.0",
+        "erwane/phpunit-resource-helper": "^2.0",
         "php-parallel-lint/php-parallel-lint": "^1.0",
-        "phpro/grumphp": "^v2.0",
         "phpunit/phpunit": "^10.5",
         "symfony/var-dumper": "^v6.0"
     },

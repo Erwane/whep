@@ -1,0 +1,25 @@
+{
+    "event": "MessageHeld",
+    "timestamp": 1754025051.575008,
+    "payload": {
+        "message": {
+            "id": 302737,
+            "token": "ySe6BuhHJ7VIZJQG",
+            "direction": "outgoing",
+            "message_id": "e0ba578ac7f644998df29149f6126b87@example.com",
+            "to": "recipient@example.com",
+            "from": "noreply@example.com",
+            "subject": "My Newsletter",
+            "timestamp": 1754025020.30279,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "status": "Held",
+        "details": "Recipient (recipient@example.com) is on the suppression list",
+        "output": "",
+        "sent_with_ssl": null,
+        "timestamp": 1754025051.557982,
+        "time": null
+    },
+    "uuid": "a8043376-0fa6-450f-bb94-58c93c189c8c"
+}

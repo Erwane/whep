@@ -1,0 +1,16 @@
+{
+    "id": 1480699,
+    "email": "recipient@example.com",
+    "message-id": "<116cf6bdfdd04525ba4ac4c2b584f2f4@whep-brevo.local>",
+    "date": "2025-08-01 07:50:37",
+    "tag": "",
+    "event": "soft_bounce",
+    "subject": "My Newsletter",
+    "sending_ip": "10.1.2.3",
+    "ts_event": 1754027437,
+    "ts": 1754027437,
+    "reason": "552 5.1.1 OFR_417",
+    "ts_epoch": 1754027437000,
+    "sender_email": "noreply@whep-brevo.local",
+    "uuid": "4d18544e-baef-49e1-9c58-473393219659"
+}

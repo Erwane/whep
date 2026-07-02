@@ -1,0 +1,31 @@
+{
+    "event": "MessageBounced",
+    "timestamp": 1753424908.2571552,
+    "payload": {
+        "original_message": {
+            "id": 1,
+            "token": "MyTok3n",
+            "direction": "outgoing",
+            "message_id": "4480c1e53f194eaaab4cfc8aed0992c7@company.com",
+            "to": "recipient@example.com",
+            "from": "no-reply@company.com",
+            "subject": "My Newsletter",
+            "timestamp": 1753248006.429238,
+            "spam_status": "NotSpam",
+            "tag": null
+        },
+        "bounce": {
+            "id": 2,
+            "token": "MyTok3n",
+            "direction": "incoming",
+            "message_id": "bb09d259-6eb1-495a-be65-75aeba99750a@example.com",
+            "to": "d8df8x@psrp.company.com",
+            "from": "relay@example.com",
+            "subject": "Undelivered Mail Returned to Sender",
+            "timestamp": 1753424906.225229,
+            "spam_status": "NotChecked",
+            "tag": null
+        }
+    },
+    "uuid": "dc1a1725-c9c6-4764-a81e-39ef6fca69c5"
+}

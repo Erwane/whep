@@ -1,0 +1,14 @@
+{
+    "event": "bounce",
+    "time": 1754253045,
+    "MessageID": 0,
+    "Message_GUID": "",
+    "email": "recipient@example.com",
+    "mj_campaign_id": 0,
+    "mj_contact_id": 0,
+    "customcampaign": "",
+    "blocked": false,
+    "hard_bounce": true,
+    "error_related_to": "",
+    "error": ""
+}

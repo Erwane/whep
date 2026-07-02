@@ -1,0 +1,23 @@
+{
+    "event": "MessageLinkClicked",
+    "timestamp": 1753375951.6504462,
+    "payload": {
+        "message": {
+            "id": 8,
+            "token": "MyTok3n",
+            "direction": "outgoing",
+            "message_id": "7d7f08810b82458688819e31cd7ff0af@company.com",
+            "to": "recipient@example.com",
+            "from": "sender@company.com",
+            "subject": "My Newsletter",
+            "timestamp": 1753375936.9231129,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "url": "https://company.com/landing_page",
+        "token": "MyTok3n",
+        "ip_address": "10.1.2.3",
+        "user_agent": "Mozilla/5.0"
+    },
+    "uuid": "1eb5e8ee-b764-4bdd-a686-ec9f3383e8c7"
+}

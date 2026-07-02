@@ -1,0 +1,15 @@
+{
+    "event": "open",
+    "time": 1754175391,
+    "MessageID": 103582793436012768,
+    "Message_GUID": "bf7c0e68-2986-4b9e-bd06-ae2cc6bf1dcf",
+    "email": "recipient@example.com",
+    "mj_campaign_id": 0,
+    "mj_contact_id": 7975516532,
+    "customcampaign": "",
+    "ip": "10.1.2.3",
+    "geo": "SE",
+    "agent": "Mozilla/5.0",
+    "CustomID": "",
+    "Payload": ""
+}

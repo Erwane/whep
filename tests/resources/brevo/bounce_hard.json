@@ -1,0 +1,16 @@
+{
+    "id": 1480699,
+    "email": "recipient@example.com",
+    "message-id": "<7aee033933224c3f9280ece4f5815215@whep-brevo.local>",
+    "date": "2025-08-01 07:02:28",
+    "tag": "",
+    "event": "hard_bounce",
+    "subject": "My Newsletter",
+    "sending_ip": "10.1.2.3",
+    "ts_event": 1754024548,
+    "ts": 1754024548,
+    "reason": "550 5.1.1 Invalid recipient",
+    "ts_epoch": 1754024548000,
+    "sender_email": "noreply@whep-brevo.local",
+    "uuid": "588d4562-5bd1-416d-905e-50591e1cde96"
+}

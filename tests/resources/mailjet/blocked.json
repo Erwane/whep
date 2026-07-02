@@ -1,0 +1,12 @@
+{
+    "event": "blocked",
+    "time": 1754197833,
+    "MessageID": 96545918984946524,
+    "email": "recipient@example.com",
+    "mj_campaign_id": 0,
+    "mj_contact_id": 7975760524,
+    "customcampaign": "",
+    "error_related_to": "mailjet",
+    "error": "preblocked",
+    "Message_GUID": "820e7477-a6b1-4243-9f4b-b1b284e42d10"
+}

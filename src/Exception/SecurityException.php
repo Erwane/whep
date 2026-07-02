@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace WHEP\Exception;
 
 /**
- * Security Exception thrown where client ip or signing key doesn't match.
+ * Security Exception thrown where remote ip or signing key doesn't match.
  */
 class SecurityException extends WHEPException
 {

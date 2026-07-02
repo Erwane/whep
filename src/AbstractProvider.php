@@ -28,7 +28,7 @@ abstract class AbstractProvider implements ProviderInterface
 {
     protected array $_defaultConfig = [
         'check_ip' => true,
-        'client_ip' => null,
+        'remote_ip' => null,
         'allowed_ip' => [],
         'signing_key' => null,
         'callbacks' => [
@@ -134,17 +134,24 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $config += [
             'check_ip' => true,
-            'client_ip' => null,
+            'remote_ip' => null,
             'allowed_ip' => [],
             'signing_key' => null,
             'callbacks' => [],
         ];
 
+        if (array_key_exists('client_ip', $config)) {
+            trigger_deprecation('WHEP', '3.0', '`client_ip` is deprecated, use `remote_ip` instead.');
+
+            $config['remote_ip'] = $config['client_ip'];
+            unset($config['client_ip']);
+        }
+
         $callbacks = array_merge($this->_defaultConfig['callbacks'], $config['callbacks']);
 
         $this->_config = array_merge($this->_defaultConfig, $config);
         $this->_config['callbacks'] = $callbacks;
-        $this->_config['client_ip'] = IpFactory::parseAddressString($config['client_ip']);
+        $this->_config['remote_ip'] = IpFactory::parseAddressString($config['remote_ip']);
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->addAllowedIpOrNetwork(array_merge($this->_allowedIpAndNetwork, $config['allowed_ip']));
@@ -286,24 +293,37 @@ abstract class AbstractProvider implements ProviderInterface
     }
 
     /**
-     * Check client_ip is in IP or network allowed list.
+     * Check remote_ip is in IP or network allowed list.
      *
-     * @param \IPLib\Address\AddressInterface|null $clientIp Client ip
+     * @param \IPLib\Address\AddressInterface|null $remoteIp Provider remote ip
+     * @return void
+     * @deprecated 3.0, use _checkRemoteIp() instead
+     * @throws \WHEP\Exception\SecurityException
+     */
+    protected function _checkClientIp(?AddressInterface $remoteIp): void
+    {
+        $this->_checkRemoteIp($remoteIp);
+    }
+
+    /**
+     * Check remote_ip is in IP or network allowed list.
+     *
+     * @param \IPLib\Address\AddressInterface|null $remoteIp Provider remote ip
      * @return void
      * @throws \WHEP\Exception\SecurityException
      */
-    protected function _checkClientIp(?AddressInterface $clientIp): void
+    protected function _checkRemoteIp(?AddressInterface $remoteIp): void
     {
         if ($this->_config['check_ip']) {
-            if (!$clientIp) {
-                throw new SecurityException('Client IP not set. Pass `client_ip` to `Factory::provider()`.');
+            if (!$remoteIp) {
+                throw new SecurityException('Remote IP not set. Pass `remote_ip` to `Factory::provider()`.');
             }
 
             $success = false;
-            $clientComparableString = $clientIp->getComparableString();
+            $clientComparableString = $remoteIp->getComparableString();
             foreach ($this->_ipAndNetwork as $item) {
                 if (
-                    ($item instanceof RangeInterface && $item->contains($clientIp))
+                    ($item instanceof RangeInterface && $item->contains($remoteIp))
                     || ($item instanceof AddressInterface && $item->getComparableString() === $clientComparableString)
                 ) {
                     $success = true;
@@ -312,7 +332,7 @@ abstract class AbstractProvider implements ProviderInterface
             }
 
             if (!$success) {
-                throw new SecurityException(sprintf('Client IP "%s" is not in allowed list.', $clientIp->toString()));
+                throw new SecurityException(sprintf('Remote IP "%s" is not in allowed list.', $remoteIp->toString()));
             }
 
             $this->_markSecurityAsChecked();
@@ -397,7 +417,7 @@ abstract class AbstractProvider implements ProviderInterface
     {
         $debug = [
             'name' => $this->getName(),
-            'client_ip' => $this->_config['client_ip']?->toString(),
+            'remote_ip' => $this->_config['remote_ip']?->toString(),
             'security_checked' => $this->securityChecked(),
             'type' => $this->getType(),
             'time' => null,

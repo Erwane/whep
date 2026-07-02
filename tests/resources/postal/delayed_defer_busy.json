@@ -1,0 +1,25 @@
+{
+    "event": "MessageDelayed",
+    "timestamp": 1753682810.646438,
+    "payload": {
+        "message": {
+            "id": 3,
+            "token": "MyTok3n",
+            "direction": "outgoing",
+            "message_id": "b96725ffdade45e8b662d925b823d280@company.com",
+            "to": "recipient@example.com",
+            "from": "noreply@company.com",
+            "subject": "My Newsletter",
+            "timestamp": 1753679424.831244,
+            "spam_status": "NotChecked",
+            "tag": null
+        },
+        "status": "SoftFail",
+        "details": "No SMTP servers were available.",
+        "output": "451 DEFER - D: We are busy;",
+        "sent_with_ssl": false,
+        "timestamp": 1753682810.641933,
+        "time": null
+    },
+    "uuid": "ea4b6053-a357-427f-84fb-307b34322e25"
+}

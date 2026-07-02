@@ -1,0 +1,17 @@
+{
+    "id": 1480699,
+    "email": "recipient@example.com",
+    "message-id": "<7ff22ac9a7494e7f85dc6b35c9e0b345@whep-brevo.local>",
+    "date": "2025-08-03 07:00:03",
+    "tag": "",
+    "event": "request",
+    "subject": "My Newsletter",
+    "sending_ip": "10.1.2.3",
+    "ts_event": 1754197203,
+    "ts": 1754197203,
+    "reason": "sent",
+    "ts_epoch": 1754197203901,
+    "sender_email": "noreply@whep-brevo.local",
+    "mirror_link": "https://mirror-link.local",
+    "uuid": "4c65b159-ebf4-4493-b28a-bbf2bf7ef7e5"
+}
