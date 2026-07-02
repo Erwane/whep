@@ -1,0 +1,11 @@
+{
+    "event": "sent",
+    "time": 1754197210,
+    "MessageID": 95701494062725382,
+    "Message_GUID": "fbc6704d-1752-4a22-a148-87b84362a024",
+    "email": "recipient@example.com",
+    "mj_campaign_id": 0,
+    "mj_contact_id": 7975760468,
+    "customcampaign": "",
+    "smtp_reply": "250 2.0.0 mail accepted for delivery"
+}

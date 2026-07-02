@@ -1,6 +1,6 @@
 <?php
 /**
- * Mailgun provider for WHEP library.
+ * This file is part of WHEP library
  *
  * @copyright   Copyright (c) Erwane BRETON
  *  For the full copyright and license information, please view the LICENSE
