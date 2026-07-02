@@ -92,6 +92,18 @@ class Mailgun extends AbstractProvider
     /**
      * @inheritDoc
      */
+    public function __construct(array $config = [])
+    {
+        if (!class_exists(Data::class)) {
+            throw new \LogicException('Mailgun provider require "dflydev/dot-access-data ^3.0". Check README.md.');
+        }
+
+        parent::__construct($config);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function checkSecurity(array $data): self
     {
         $signature = $data['signature'] ?? [
