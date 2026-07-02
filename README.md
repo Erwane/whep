@@ -9,21 +9,26 @@
 This is the base project to easily handle webhooks sent by different emailing providers and uniformizing in
 a comprehensive object.
 
-This project is not made to be used alone, you need to pick your providers handlers corresponding to your project.
+## Migrating to v2
+
+From v2, all providers are included into this lib, so, you don't need providers children packages anymore.
 
 ## Available providers handlers
 
-| Provider                                | Package                                                       |
-|-----------------------------------------|---------------------------------------------------------------|
-| [Brevo](https://www.brevo.com/)         | [erwane/whep-brevo](https://github.com/Erwane/whep-brevo)     |
-| [Mailgun](https://www.mailgun.com/)     | [erwane/whep-mailgun](https://github.com/Erwane/whep-mailgun) |
-| [Mailjet](https://www.mailjet.com/)     | [erwane/whep-mailjet](https://github.com/Erwane/whep-mailjet) |
-| [Postal](https://docs.postalserver.io/) | [erwane/whep-postal](https://github.com/Erwane/whep-postal)   |
+* [Brevo](https://www.brevo.com/)
+* [Mailgun](https://www.mailgun.com/)
+* [Mailjet](https://www.mailjet.com/)
+* [Postal](https://docs.postalserver.io/)
 
 ## Usage
 
 ```shell
-composer require erwane/whep-<provider>
+composer require erwane/whep-client
+```
+
+**Warning**: For Brevo provider, additional vendor is required.
+```
+composer require dflydev/dot-access-data:"^3.0"
 ```
 
 ```php
