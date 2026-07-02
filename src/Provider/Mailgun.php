@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace WHEP\Provider;
 
 use Dflydev\DotAccessData\Data;
+use LogicException;
 use WHEP\AbstractProvider;
 use WHEP\Exception\SecurityException;
 use WHEP\ProviderInterface;
@@ -95,7 +96,7 @@ class Mailgun extends AbstractProvider
     public function __construct(array $config = [])
     {
         if (!class_exists(Data::class)) {
-            throw new \LogicException('Mailgun provider require "dflydev/dot-access-data ^3.0". Check README.md.');
+            throw new LogicException('Mailgun provider require "dflydev/dot-access-data ^3.0". Check README.md.');
         }
 
         parent::__construct($config);
