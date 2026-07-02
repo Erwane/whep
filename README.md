@@ -1,10 +1,10 @@
 # Webhooks Handler for Emailing providers
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![codecov](https://codecov.io/gh/Erwane/whep-client/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep-client)
-[![CI](https://github.com/Erwane/whep-client/actions/workflows/ci.yml/badge.svg)](https://github.com/Erwane/whep-client/actions)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/whep-client)](https://packagist.org/packages/Erwane/whep-client)
-[![Packagist Version](https://img.shields.io/packagist/v/Erwane/whep-client)](https://packagist.org/packages/Erwane/whep-client)
+[![codecov](https://codecov.io/gh/Erwane/whep/graph/badge.svg?token=L98IZZFBY2)](https://codecov.io/gh/Erwane/whep)
+[![CI](https://github.com/Erwane/whep/actions/workflows/ci.yml/badge.svg)](https://github.com/Erwane/whep/actions)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/whep)](https://packagist.org/packages/Erwane/whep)
+[![Packagist Version](https://img.shields.io/packagist/v/Erwane/whep)](https://packagist.org/packages/Erwane/whep)
 
 This is the base project to easily handle webhooks sent by different emailing providers and uniformizing in
 a comprehensive object.
@@ -16,7 +16,7 @@ With v3, all providers are included into this lib, so, you don't need providers 
 ## Use composer
 
 ```shell
-composer require erwane/whep-client
+composer require erwane/whep
 ```
 
 **Warning**: For [Mailgun provider](docs/Mailgun.md), additional vendor is required.

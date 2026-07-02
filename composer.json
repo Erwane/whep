@@ -1,16 +1,16 @@
 {
-    "name": "erwane/whep-client",
+    "name": "erwane/whep",
     "description": "Webhooks handler for emailing providers.",
     "type": "library",
-    "version": "1.4.0",
+    "version": "3.0.0",
     "keywords": [
         "webhook",
         "emailing"
     ],
-    "homepage": "https://github.com/Erwane/whep-client",
+    "homepage": "https://github.com/Erwane/whep",
     "support": {
-        "issues": "https://github.com/Erwane/whep-client/issues",
-        "source": "https://github.com/Erwane/whep-client"
+        "issues": "https://github.com/Erwane/whep/issues",
+        "source": "https://github.com/Erwane/whep"
     },
     "license": "MIT",
     "authors": [
