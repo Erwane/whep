@@ -1,0 +1,15 @@
+{
+    "id": 1480699,
+    "email": "recipient@example.com",
+    "message-id": "<acbe62ca22be49a98ddd7245d581a034@whep-brevo.local>",
+    "date": "2025-08-02 07:10:34",
+    "tag": "",
+    "event": "blocked",
+    "subject": "My Newsletter",
+    "ts_event": 1754111434,
+    "ts": 1754111434,
+    "reason": "blocked : due to blacklist user",
+    "ts_epoch": 1754111434739,
+    "sender_email": "noreply@whep-brevo.local",
+    "uuid": "b9e9ba41-ec17-401b-9102-a1f3ab76c477"
+}

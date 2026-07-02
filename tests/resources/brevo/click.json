@@ -1,0 +1,17 @@
+{
+    "id": 1480699,
+    "email": "recipient@example.com",
+    "message-id": "<53e10cd1dfdf402b931efc373678f672@whep-brevo.local>",
+    "date": "2025-08-03 16:41:33",
+    "event": "click",
+    "subject": "My Newsletter",
+    "sending_ip": "10.1.2.3",
+    "ts": 1754232093,
+    "ts_epoch": 1754232093875,
+    "ts_event": 1754232093,
+    "link": "https://company.com/landing_page",
+    "sender_email": "noreply@whep-brevo.local",
+    "user_agent": "Mozilla/5.0",
+    "device_used": "DESKTOP",
+    "uuid": "ae03fe05-55d6-430d-afdc-b56a2c09baad"
+}
