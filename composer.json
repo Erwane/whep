@@ -2,6 +2,7 @@
     "name": "erwane/whep-client",
     "description": "Webhooks handler for emailing providers.",
     "type": "library",
+    "version": "1.4.0",
     "keywords": [
         "webhook",
         "emailing"
@@ -27,6 +28,8 @@
     },
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^5.0",
+        "dflydev/dot-access-data": "^3.0",
+        "erwane/phpunit-resource-helper": "^2.0",
         "php-parallel-lint/php-parallel-lint": "^1.0",
         "phpunit/phpunit": "^10.5",
         "symfony/var-dumper": "^v6.0"
