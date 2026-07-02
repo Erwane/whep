@@ -21,6 +21,7 @@ class Generic extends AbstractProvider
      */
     public function checkSecurity(array $data): self
     {
+        // Keep deprecated call to test it.
         $this->_checkClientIp($this->_config['remote_ip']);
 
         return $this;

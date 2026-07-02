@@ -297,9 +297,22 @@ abstract class AbstractProvider implements ProviderInterface
      *
      * @param \IPLib\Address\AddressInterface|null $remoteIp Provider remote ip
      * @return void
+     * @deprecated 3.0, use _checkRemoteIp() instead
      * @throws \WHEP\Exception\SecurityException
      */
     protected function _checkClientIp(?AddressInterface $remoteIp): void
+    {
+        $this->_checkRemoteIp($remoteIp);
+    }
+
+    /**
+     * Check remote_ip is in IP or network allowed list.
+     *
+     * @param \IPLib\Address\AddressInterface|null $remoteIp Provider remote ip
+     * @return void
+     * @throws \WHEP\Exception\SecurityException
+     */
+    protected function _checkRemoteIp(?AddressInterface $remoteIp): void
     {
         if ($this->_config['check_ip']) {
             if (!$remoteIp) {
